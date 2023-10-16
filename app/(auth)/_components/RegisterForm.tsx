@@ -2,7 +2,6 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-
 import Spinner from "@/components/spinner";
 import {
   Form,
@@ -13,59 +12,76 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Separator } from "@/components/ui/separator";
-import { loginSchema, type LoginForm } from "@/lib/validations";
+import { registerSchema, type RegisterForm } from "@/lib/validations";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
+import axios from "axios";
 import PasswordInput from "./PasswordInput";
 import GoogleButton from "./GoogleButton";
 
-function SignInForm() {
+function RegisterForm() {
   const [loading, setLoading] = useState(false);
 
   const router = useRouter();
 
-  const form = useForm<LoginForm>({
-    defaultValues: { email: "", password: "" },
-    resolver: zodResolver(loginSchema),
+  const form = useForm<RegisterForm>({
+    defaultValues: { name: "", email: "", password: "" },
+    resolver: zodResolver(registerSchema),
     mode: "onChange",
   });
 
   return (
     <div className='max-w-xs mx-auto space-y-3'>
-      <h1 className='font-bold text-3xl text-center'>
-        Welcome to <span className='block'>Church Finder PH</span>
-      </h1>
+      <h1 className='font-bold text-3xl text-center'>Create Your Account</h1>
       <p className='text-muted-foreground text-center'>
-        Log in to your account
+        Start using the site by first creating an account
       </p>
       <Form {...form}>
         <form
-          onSubmit={form.handleSubmit(async ({ email, password }) => {
-            setLoading(true);
-            const response = await signIn("credentials", {
-              email,
-              password,
-              redirect: false,
-            });
+          onSubmit={form.handleSubmit(async ({ name, email, password }) => {
+            try {
+              setLoading(true);
 
-            if (!response?.ok) {
-              toast.error("No account found");
+              const response = await axios.post("/api/register", {
+                name,
+                email,
+                password,
+              });
+
+              router.replace("/signin");
+
+              router.refresh();
+            } catch (error) {
+              if (axios.isAxiosError(error)) {
+                if (error.response?.data?.error) {
+                  toast.error(error.response?.data?.error);
+                }
+              } else {
+                toast.error("Server Error: Something went wrong");
+              }
+            } finally {
               setLoading(false);
-              return;
             }
-
-            toast.success("Welcome back!");
-
-            router.replace("/me");
-            router.refresh();
           })}
           className='space-y-4'
         >
+          <FormField
+            control={form.control}
+            name='name'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Name</FormLabel>
+                <FormControl>
+                  <Input placeholder='Enter your name' {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <FormField
             control={form.control}
             name='email'
@@ -97,7 +113,7 @@ function SignInForm() {
             )}
           />
           <Button className='w-full' disabled={loading}>
-            {loading ? <Spinner /> : "Sign In"}
+            {loading ? <Spinner /> : "Register"}
           </Button>
         </form>
       </Form>
@@ -108,15 +124,14 @@ function SignInForm() {
         </span>
       </div>
       <GoogleButton />
-
       <p className='text-sm text-center pt-4'>
-        No account yet?{" "}
-        <Link href='/register' className='font-medium text-primary'>
-          Create an Account
+        Already have an account?{" "}
+        <Link href='/signin' className='font-medium text-primary'>
+          Log In
         </Link>
       </p>
     </div>
   );
 }
 
-export default SignInForm;
+export default RegisterForm;

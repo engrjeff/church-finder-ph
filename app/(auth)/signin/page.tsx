@@ -1,12 +1,7 @@
 import SignInForm from "../_components/SignInForm";
 
 function SignInPage() {
-  return (
-    <div>
-      SignInPage
-      <SignInForm />
-    </div>
-  );
+  return <SignInForm />;
 }
 
 export default SignInPage;

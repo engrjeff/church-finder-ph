@@ -8,12 +8,7 @@ async function AuthLayout({ children }: { children: React.ReactNode }) {
     redirect("/me");
   }
 
-  return (
-    <div>
-      <h1>Auth Layout</h1>
-      {children}
-    </div>
-  );
+  return <div className='container py-20'>{children}</div>;
 }
 
 export default AuthLayout;
