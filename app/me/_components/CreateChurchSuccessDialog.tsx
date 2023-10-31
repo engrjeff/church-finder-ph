@@ -21,7 +21,7 @@ function CreateChurchSuccessDialog({
 }: ComponentProps<typeof AlertDialog> & { churchId?: string }) {
   return (
     <AlertDialog {...props}>
-      <AlertDialogContent className="max-w-sm space-y-3">
+      <AlertDialogContent className="max-w-md space-y-3">
         <AlertDialogHeader className="items-center">
           <StatusIcon status="success" />
           <AlertDialogTitle className="pt-3">
@@ -34,7 +34,7 @@ function CreateChurchSuccessDialog({
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel asChild>
-            <Link href="/me/church">Cancel</Link>
+            <Link href="/me/church">Later</Link>
           </AlertDialogCancel>
           <AlertDialogAction asChild>
             <Link href={`/me/church/${churchId}/edit?step=church-profile`}>

@@ -1,12 +1,15 @@
 'use client';
 
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useState } from 'react';
+import { useParams, useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Cross1Icon } from '@radix-ui/react-icons';
 import type { SubmitErrorHandler, SubmitHandler } from 'react-hook-form';
 import { useFieldArray, useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 
-import { cn } from '@/lib/utils';
+import { churchApi } from '@/lib/apiClient';
+import { cn, errorHandler } from '@/lib/utils';
 import {
   churchContactSchema,
   type ChurchContactData,
@@ -69,18 +72,52 @@ function ChurchContactForm({
   });
 
   const router = useRouter();
-  const searchParams = useSearchParams();
 
-  const church_id = searchParams.get('id');
+  const [savingStatus, setSavingStatus] = useState<
+    'idle' | 'saving' | 'saving-exit'
+  >('idle');
 
-  const handleSave = async (values: ChurchContactData) => {};
+  const isLoading = savingStatus !== 'idle';
+
+  const { id: church_id } = useParams<{ id: string }>();
+
+  const handleSave = async (values: ChurchContactData) => {
+    try {
+      let result;
+      if (churchContactId) {
+        result = await churchApi.churchContact.update(church_id, {
+          ...values,
+          id: churchContactId,
+        });
+      } else {
+        result = await churchApi.churchContact.create({
+          ...values,
+          church_id,
+        });
+      }
+
+      if (result.data.status === 'success') {
+        form.reset();
+
+        toast.success('Church contact info was saved!');
+      }
+    } catch (error) {
+      errorHandler(error);
+    } finally {
+      setSavingStatus('idle');
+    }
+  };
 
   const onSubmit: SubmitHandler<ChurchContactData> = async (values) => {
+    setSavingStatus('saving');
+
     await handleSave(values);
 
-    router.push(`/listings/edit?id=${church_id}&step=pastor-profile`, {
+    router.push(`/me/church/${church_id}/edit?step=pastor-profile`, {
       scroll: true,
     });
+
+    router.refresh();
   };
 
   const handleSaveAndExit = async () => {
@@ -88,10 +125,14 @@ function ChurchContactForm({
 
     if (!noError) return;
 
+    setSavingStatus('saving-exit');
+
     const values = form.getValues();
     await handleSave(values);
 
-    router.push('/listings');
+    router.push('/me/church');
+
+    router.refresh();
   };
 
   const onError: SubmitErrorHandler<ChurchContactData> = (err) => {
@@ -109,10 +150,7 @@ function ChurchContactForm({
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit, onError)}>
-            <fieldset
-              disabled={form.formState.isSubmitting}
-              className="space-y-6"
-            >
+            <fieldset disabled={isLoading} className="space-y-6">
               <FormField
                 control={form.control}
                 name="email"
@@ -304,10 +342,12 @@ function ChurchContactForm({
                   className="shadow-none"
                   onClick={handleSaveAndExit}
                 >
-                  Save and Exit
+                  {savingStatus === 'saving-exit'
+                    ? 'Saving changes...'
+                    : 'Save and Exit'}
                 </Button>
                 <Button type="submit" size="lg" className="ml-auto shadow-none">
-                  {form.formState.isSubmitting
+                  {savingStatus === 'saving'
                     ? 'Saving changes...'
                     : 'Save and Continue'}
                 </Button>

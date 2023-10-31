@@ -1,9 +1,13 @@
 'use client';
 
+import { useParams } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { SubmitErrorHandler, SubmitHandler } from 'react-hook-form';
 import { useFieldArray, useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 
+import { churchApi } from '@/lib/apiClient';
+import { errorHandler } from '@/lib/utils';
 import {
   churchMediaSchema,
   type ChurchMediaData,
@@ -31,10 +35,16 @@ const defaultValues: ChurchMediaData = {
   gallery: [],
 };
 
-function ChurchMediaForm() {
+function ChurchMediaForm({
+  churchMediaData,
+  churchMediaId,
+}: {
+  churchMediaData?: ChurchMediaData;
+  churchMediaId?: string;
+}) {
   const form = useForm<ChurchMediaData>({
     resolver: zodResolver(churchMediaSchema),
-    defaultValues,
+    defaultValues: churchMediaData ? churchMediaData : defaultValues,
     mode: 'onChange',
   });
 
@@ -43,8 +53,29 @@ function ChurchMediaForm() {
     control: form.control,
   });
 
-  const onSubmit: SubmitHandler<ChurchMediaData> = (values) => {
-    console.log(values);
+  const { id: church_id } = useParams<{ id: string }>();
+
+  const onSubmit: SubmitHandler<ChurchMediaData> = async (values) => {
+    try {
+      let result;
+      if (churchMediaId) {
+        result = await churchApi.churchMedia.update(church_id, {
+          ...values,
+          id: churchMediaId,
+        });
+      } else {
+        result = await churchApi.churchMedia.create({
+          ...values,
+          church_id,
+        });
+      }
+
+      if (result.data.status === 'success') {
+        toast.success('Church media saved!');
+      }
+    } catch (error) {
+      errorHandler(error);
+    }
   };
 
   const onError: SubmitErrorHandler<ChurchMediaData> = (err) => {
@@ -79,8 +110,10 @@ function ChurchMediaForm() {
                       fileData={field.value}
                       onRemoveExisting={galleryValues.remove}
                       onClearAll={galleryValues.remove}
-                      onSave={(data) => {
+                      onSave={async (data) => {
                         form.setValue('gallery', data);
+
+                        await onSubmit({ gallery: data });
                       }}
                     />
                   </FormControl>
@@ -88,7 +121,7 @@ function ChurchMediaForm() {
                 </FormItem>
               )}
             />
-            <div className="space-x-4 pt-4">
+            <div className="hidden space-x-4 pt-4">
               <Button
                 type="button"
                 variant="outline"

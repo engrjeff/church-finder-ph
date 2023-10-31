@@ -1,10 +1,14 @@
 'use client';
 
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useState } from 'react';
+import { useParams, useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { SubmitErrorHandler, SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 
+import { churchApi } from '@/lib/apiClient';
+import { errorHandler } from '@/lib/utils';
 import {
   pastorProfileSchema,
   type PastorProfileData,
@@ -50,18 +54,52 @@ function PastorProfileForm({
   });
 
   const router = useRouter();
-  const searchParams = useSearchParams();
 
-  const church_id = searchParams.get('id');
+  const [savingStatus, setSavingStatus] = useState<
+    'idle' | 'saving' | 'saving-exit'
+  >('idle');
 
-  const handleSave = async (values: PastorProfileData) => {};
+  const isLoading = savingStatus !== 'idle';
+
+  const { id: church_id } = useParams<{ id: string }>();
+
+  const handleSave = async (values: PastorProfileData) => {
+    try {
+      let result;
+      if (pastorProfileId) {
+        result = await churchApi.pastorProfile.update(church_id, {
+          ...values,
+          id: pastorProfileId,
+        });
+      } else {
+        result = await churchApi.pastorProfile.create({
+          ...values,
+          church_id,
+        });
+      }
+
+      if (result.data.status === 'success') {
+        form.reset();
+
+        toast.success('Pastor profile was saved!');
+      }
+    } catch (error) {
+      errorHandler(error);
+    } finally {
+      setSavingStatus('idle');
+    }
+  };
 
   const onSubmit: SubmitHandler<PastorProfileData> = async (values) => {
+    setSavingStatus('saving');
+
     await handleSave(values);
 
-    router.push(`/listings/edit?id=${church_id}&step=media`, {
+    router.push(`/me/church/${church_id}/edit?step=media`, {
       scroll: true,
     });
+
+    router.refresh();
   };
 
   const handleSaveAndExit = async () => {
@@ -69,10 +107,14 @@ function PastorProfileForm({
 
     if (!noError) return;
 
+    setSavingStatus('saving-exit');
+
     const values = form.getValues();
     await handleSave(values);
 
-    router.push('/listings');
+    router.push('/me/church');
+
+    router.refresh();
   };
 
   const onError: SubmitErrorHandler<PastorProfileData> = (err) => {
@@ -90,10 +132,7 @@ function PastorProfileForm({
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit, onError)}>
-            <fieldset
-              disabled={form.formState.isSubmitting}
-              className="space-y-6"
-            >
+            <fieldset disabled={isLoading} className="space-y-6">
               <FormField
                 control={form.control}
                 name="photo"
@@ -134,7 +173,11 @@ function PastorProfileForm({
                       A short bio about the church&apos;s pastor.
                     </FormDescription>
                     <FormControl>
-                      <Textarea placeholder="Enter a short bio" {...field} />
+                      <Textarea
+                        placeholder="Enter a short bio"
+                        rows={4}
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -148,10 +191,12 @@ function PastorProfileForm({
                   className="shadow-none"
                   onClick={handleSaveAndExit}
                 >
-                  Save and Exit
+                  {savingStatus === 'saving-exit'
+                    ? 'Saving changes...'
+                    : 'Save and Exit'}
                 </Button>
                 <Button type="submit" size="lg" className="ml-auto shadow-none">
-                  {form.formState.isSubmitting
+                  {savingStatus === 'saving'
                     ? 'Saving changes...'
                     : 'Save and Continue'}
                 </Button>

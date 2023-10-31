@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/prisma/client';
 
 import getSession from '@/lib/getServerSession';
-import { churchIdSchema, churchProfileSchema } from '@/lib/validations/church';
+import { churchIdSchema, churchMediaSchema } from '@/lib/validations/church';
 
 export async function POST(req: NextRequest) {
   try {
@@ -19,9 +19,7 @@ export async function POST(req: NextRequest) {
 
     const body = await req.json();
 
-    const validation = churchProfileSchema
-      .merge(churchIdSchema)
-      .safeParse(body);
+    const validation = churchMediaSchema.merge(churchIdSchema).safeParse(body);
 
     if (!validation.success) {
       return NextResponse.json(
@@ -36,7 +34,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const churchProfile = await prisma.churchProfile.create({
+    const churchMedia = await prisma.churchMedia.create({
       data: validation.data,
     });
 
@@ -47,13 +45,13 @@ export async function POST(req: NextRequest) {
       },
       data: {
         steps_completed: {
-          push: 'church-profile',
+          push: 'media',
         },
       },
     });
 
     return NextResponse.json(
-      { status: 'success', data: churchProfile },
+      { status: 'success', data: churchMedia },
       { status: 201 }
     );
   } catch (error) {

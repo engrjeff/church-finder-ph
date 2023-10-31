@@ -64,3 +64,40 @@ export async function PATCH(
     return NextResponse.json(new Error('Server Error'), { status: 500 });
   }
 }
+
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  try {
+    const session = await getSession();
+    if (!session) {
+      redirect('/signin');
+    }
+
+    if (!session.user.id) {
+      redirect('/signin');
+    }
+
+    const church = await prisma.church.findUnique({
+      where: { id: params.id },
+    });
+
+    if (!church)
+      return NextResponse.json(
+        { status: 'failed', error: 'Church not found' },
+        { status: 404 }
+      );
+
+    await prisma.church.delete({
+      where: {
+        id: params.id,
+      },
+    });
+
+    return NextResponse.json({ status: 'success' }, { status: 200 });
+  } catch (error) {
+    console.log(error);
+    return NextResponse.json(new Error('Server Error'), { status: 500 });
+  }
+}

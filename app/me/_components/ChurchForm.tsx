@@ -2,7 +2,12 @@
 
 import { useSearchParams } from 'next/navigation';
 
-import { ChurchProfileData } from '@/lib/validations/church';
+import {
+  ChurchContactData,
+  ChurchMediaData,
+  ChurchProfileData,
+  PastorProfileData,
+} from '@/lib/validations/church';
 import RenderIf from '@/components/render-if';
 
 import { type ChurchFormData } from '../services/church';
@@ -21,7 +26,13 @@ function ChurchForm({
 
   const currentStep = searchParams.get('step') || 'basic-info';
 
-  const { profile, ...basicInfo } = churchFormData;
+  const {
+    profile,
+    contact_details,
+    pastor_details,
+    church_media,
+    ...basicInfo
+  } = churchFormData;
 
   return (
     <div>
@@ -35,13 +46,22 @@ function ChurchForm({
         />
       </RenderIf>
       <RenderIf condition={currentStep === 'church-contact-info'}>
-        <ChurchContactForm />
+        <ChurchContactForm
+          churchContactData={contact_details as unknown as ChurchContactData}
+          churchContactId={contact_details?.id}
+        />
       </RenderIf>
       <RenderIf condition={currentStep === 'pastor-profile'}>
-        <PastorProfileForm />
+        <PastorProfileForm
+          pastorData={pastor_details as unknown as PastorProfileData}
+          pastorProfileId={pastor_details?.id}
+        />
       </RenderIf>
       <RenderIf condition={currentStep === 'media'}>
-        <ChurchMediaForm />
+        <ChurchMediaForm
+          churchMediaData={church_media as unknown as ChurchMediaData}
+          churchMediaId={church_media?.id}
+        />
       </RenderIf>
     </div>
   );

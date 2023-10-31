@@ -3,12 +3,16 @@ import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/prisma/client';
 
 import getSession from '@/lib/getServerSession';
-import { churchIdSchema, churchProfileSchema } from '@/lib/validations/church';
+import { idSchema, pastorProfileSchema } from '@/lib/validations/church';
 
-export async function POST(req: NextRequest) {
+export const dynamic = 'force-dynamic';
+
+export async function PATCH(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
   try {
     const session = await getSession();
-
     if (!session) {
       redirect('/signin');
     }
@@ -19,9 +23,7 @@ export async function POST(req: NextRequest) {
 
     const body = await req.json();
 
-    const validation = churchProfileSchema
-      .merge(churchIdSchema)
-      .safeParse(body);
+    const validation = pastorProfileSchema.merge(idSchema).safeParse(body);
 
     if (!validation.success) {
       return NextResponse.json(
@@ -36,25 +38,34 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const churchProfile = await prisma.churchProfile.create({
-      data: validation.data,
-    });
-
-    // update church steps taken
-    await prisma.church.update({
+    const pastorProfile = await prisma.pastor.findUnique({
       where: {
-        id: validation.data.church_id,
-      },
-      data: {
-        steps_completed: {
-          push: 'church-profile',
+        id: validation.data.id,
+        AND: {
+          church_id: params.id,
         },
       },
     });
 
+    if (!pastorProfile)
+      return NextResponse.json(
+        { status: 'failed', error: 'Pastor profile not found' },
+        { status: 404 }
+      );
+
+    const updatedPastor = await prisma.pastor.update({
+      where: {
+        id: validation.data.id,
+        AND: {
+          church_id: params.id,
+        },
+      },
+      data: validation.data,
+    });
+
     return NextResponse.json(
-      { status: 'success', data: churchProfile },
-      { status: 201 }
+      { status: 'success', data: updatedPastor },
+      { status: 200 }
     );
   } catch (error) {
     console.log(error);

@@ -164,6 +164,8 @@ function ChurchProfileForm({
     router.push(`/me/church/${church_id}/edit?step=church-contact-info`, {
       scroll: true,
     });
+
+    router.refresh();
   };
 
   const handleSaveAndExit = async () => {
@@ -177,6 +179,8 @@ function ChurchProfileForm({
     await handleSave(values);
 
     router.push('/me/church');
+
+    router.refresh();
   };
 
   const onError: SubmitErrorHandler<ChurchProfileData> = (err) => {
