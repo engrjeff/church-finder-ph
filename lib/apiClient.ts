@@ -1,4 +1,4 @@
-import { Church } from '@prisma/client';
+import { Church, ChurchProfile } from '@prisma/client';
 import axios, { AxiosRequestConfig } from 'axios';
 
 const axiosInstance = axios.create({
@@ -55,4 +55,5 @@ class APIClient<T> {
 
 export const churchApi = {
   basicInfo: new APIClient<Church>('/church/basic-info'),
+  churchProfile: new APIClient<ChurchProfile>('/church/church-profile'),
 };

@@ -2,6 +2,7 @@
 
 import { useSearchParams } from 'next/navigation';
 
+import { ChurchProfileData } from '@/lib/validations/church';
 import RenderIf from '@/components/render-if';
 
 import { type ChurchFormData } from '../services/church';
@@ -28,7 +29,10 @@ function ChurchForm({
         <BasicInfoForm basicInfoData={basicInfo} />
       </RenderIf>
       <RenderIf condition={currentStep === 'church-profile'}>
-        <ChurchProfileForm />
+        <ChurchProfileForm
+          churchProfileData={profile as unknown as ChurchProfileData}
+          churchProfileId={profile?.id}
+        />
       </RenderIf>
       <RenderIf condition={currentStep === 'church-contact-info'}>
         <ChurchContactForm />

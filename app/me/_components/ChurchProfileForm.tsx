@@ -1,12 +1,15 @@
 'use client';
 
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useState } from 'react';
+import { useParams, useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Cross1Icon } from '@radix-ui/react-icons';
 import type { SubmitErrorHandler, SubmitHandler } from 'react-hook-form';
 import { useFieldArray, useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 
-import { cn } from '@/lib/utils';
+import { churchApi } from '@/lib/apiClient';
+import { cn, errorHandler } from '@/lib/utils';
 import {
   churchProfileSchema,
   type ChurchProfileData,
@@ -40,55 +43,55 @@ import {
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 
+// const defaultValues: ChurchProfileData = {
+//   church_size: 0,
+//   communion_frequency: 'Weekly',
+//   vision: '',
+//   mission: '',
+//   services: [
+//     {
+//       title: '',
+//       day: 'Sunday',
+//       time: '08:00:00',
+//     },
+//   ],
+//   confessions: [{ title: '' }],
+//   ministries: [{ title: '' }],
+//   public_services: [{ title: '' }],
+// };
+
+// test data
 const defaultValues: ChurchProfileData = {
-  church_size: 0,
+  church_size: 100,
   communion_frequency: 'Weekly',
-  vision: '',
-  mission: '',
+  vision: 'Some vision',
+  mission: 'Some mission',
   services: [
     {
-      title: '',
+      title: 'Sunday Service',
       day: 'Sunday',
       time: '08:00:00',
     },
+    {
+      title: 'Midweek Service',
+      day: 'Wednesday',
+      time: '17:00:00',
+    },
   ],
-  confessions: [{ title: '' }],
-  ministries: [{ title: '' }],
-  public_services: [{ title: '' }],
+  confessions: [{ title: 'Heidelberg Catechism' }],
+  ministries: [
+    { title: 'Worship' },
+    { title: 'Ushering' },
+    { title: 'Multimedia' },
+  ],
+  public_services: [{ title: 'Weddings' }, { title: 'Dedications' }],
 };
-
-// test data
-// const defaultValues: ChurchProfileData = {
-//   church_size: 100,
-//   communion_frequency: "Weekly",
-//   vision: "Some vision",
-//   mission: "Some mission",
-//   services: [
-//     {
-//       title: "Sunday Service",
-//       day: "Sunday",
-//       time: "08:00:00",
-//     },
-//     {
-//       title: "Midweek Service",
-//       day: "Wednesday",
-//       time: "17:00:00",
-//     },
-//   ],
-//   confessions: [{ title: "Heidelberg Catechism" }],
-//   ministries: [
-//     { title: "Worship" },
-//     { title: "Ushering" },
-//     { title: "Multimedia" },
-//   ],
-//   public_services: [{ title: "Weddings" }, { title: "Dedications" }],
-// };
 
 function ChurchProfileForm({
   churchProfileData,
   churchProfileId,
 }: {
-  churchProfileData?: ChurchProfileData;
+  churchProfileData: ChurchProfileData | null;
   churchProfileId?: string;
 }) {
   const router = useRouter();
@@ -118,16 +121,47 @@ function ChurchProfileForm({
     control: form.control,
   });
 
-  const searchParams = useSearchParams();
+  const [savingStatus, setSavingStatus] = useState<
+    'idle' | 'saving' | 'saving-exit'
+  >('idle');
 
-  const church_id = searchParams.get('id');
+  const isLoading = savingStatus !== 'idle';
 
-  const handleSave = async (values: ChurchProfileData) => {};
+  const { id: church_id } = useParams<{ id: string }>();
+
+  const handleSave = async (values: ChurchProfileData) => {
+    try {
+      let result;
+      if (churchProfileId) {
+        result = await churchApi.churchProfile.update(church_id, {
+          ...values,
+          id: churchProfileId,
+        });
+      } else {
+        result = await churchApi.churchProfile.create({
+          ...values,
+          church_id,
+        });
+      }
+
+      if (result.data.status === 'success') {
+        form.reset();
+
+        toast.success('Church profile was saved!');
+      }
+    } catch (error) {
+      errorHandler(error);
+    } finally {
+      setSavingStatus('idle');
+    }
+  };
 
   const onSubmit: SubmitHandler<ChurchProfileData> = async (values) => {
+    setSavingStatus('saving');
+
     await handleSave(values);
 
-    router.push(`/listings/edit?id=${church_id}&step=church-contact-info`, {
+    router.push(`/me/church/${church_id}/edit?step=church-contact-info`, {
       scroll: true,
     });
   };
@@ -137,10 +171,12 @@ function ChurchProfileForm({
 
     if (!noError) return;
 
+    setSavingStatus('saving-exit');
+
     const values = form.getValues();
     await handleSave(values);
 
-    router.push('/listings');
+    router.push('/me/church');
   };
 
   const onError: SubmitErrorHandler<ChurchProfileData> = (err) => {
@@ -158,10 +194,7 @@ function ChurchProfileForm({
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit, onError)}>
-            <fieldset
-              className="space-y-6"
-              disabled={form.formState.isSubmitting}
-            >
+            <fieldset className="space-y-6" disabled={isLoading}>
               <div className="space-y-3">
                 <Label>Church Services</Label>
                 {services.fields.map((field, index) => (
@@ -562,10 +595,12 @@ function ChurchProfileForm({
                   className="shadow-none"
                   onClick={handleSaveAndExit}
                 >
-                  Save and Exit
+                  {savingStatus === 'saving-exit'
+                    ? 'Saving changes...'
+                    : 'Save and Exit'}
                 </Button>
                 <Button type="submit" size="lg" className="ml-auto shadow-none">
-                  {form.formState.isSubmitting
+                  {savingStatus === 'saving'
                     ? 'Saving changes...'
                     : 'Save and Continue'}
                 </Button>
