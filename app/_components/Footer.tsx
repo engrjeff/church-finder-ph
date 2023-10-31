@@ -1,7 +1,7 @@
 function Footer() {
   return (
-    <footer className='border-t'>
-      <div className='container py-10'>Footer</div>
+    <footer className="border-t">
+      <div className="container py-10">Footer</div>
     </footer>
   );
 }

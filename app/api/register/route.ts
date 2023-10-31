@@ -1,7 +1,8 @@
-import bcrypt from "bcrypt";
-import { registerSchema } from "@/lib/validations";
-import prisma from "@/prisma/client";
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server';
+import prisma from '@/prisma/client';
+import bcrypt from 'bcrypt';
+
+import { registerSchema } from '@/lib/validations/auth';
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
@@ -23,7 +24,7 @@ export async function POST(request: NextRequest) {
 
   if (existingUser)
     return NextResponse.json(
-      { error: "The given email is already in use" },
+      { error: 'The given email is already in use' },
       { status: 400 }
     );
 

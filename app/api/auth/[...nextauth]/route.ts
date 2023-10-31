@@ -1,29 +1,28 @@
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import GoogleProvider from "next-auth/providers/google";
-import CredentialsProvider from "next-auth/providers/credentials";
+import db from '@/prisma/client';
+import prisma from '@/prisma/client';
+import { PrismaAdapter } from '@next-auth/prisma-adapter';
+import bcrypt from 'bcrypt';
+import { type NextAuthOptions } from 'next-auth';
+import NextAuth from 'next-auth/next';
+import CredentialsProvider from 'next-auth/providers/credentials';
+import GoogleProvider from 'next-auth/providers/google';
 
-import db from "@/prisma/client";
-import { type NextAuthOptions } from "next-auth";
-import NextAuth from "next-auth/next";
-import bcrypt from "bcrypt";
-
-import prisma from "@/prisma/client";
-import { loginSchema } from "@/lib/validations";
+import { loginSchema } from '@/lib/validations/auth';
 
 export const nextAUthOptions: NextAuthOptions = {
   adapter: PrismaAdapter(db),
   session: {
-    strategy: "jwt",
+    strategy: 'jwt',
   },
   pages: {
-    signIn: "/signin",
+    signIn: '/signin',
   },
   providers: [
     CredentialsProvider({
-      name: "Credentials",
+      name: 'Credentials',
       credentials: {
-        email: { label: "Email", type: "email" },
-        password: { label: "Password", type: "password" },
+        email: { label: 'Email', type: 'email' },
+        password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials, req) {
         const validation = loginSchema.safeParse(credentials);

@@ -1,3 +1,5 @@
+import { signOut } from 'next-auth/react';
+
 import {
   AlertDialog,
   AlertDialogAction,
@@ -8,17 +10,16 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
-import { signOut } from "next-auth/react";
+} from '@/components/ui/alert-dialog';
+import { Button } from '@/components/ui/button';
 
 function SignoutConfirmDialog() {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
         <Button
-          variant='ghost'
-          className='rounded-sm px-2 py-1.5 h-8 text-sm w-full justify-start'
+          variant="ghost"
+          className="h-8 w-full justify-start rounded-sm px-2 py-1.5 text-sm"
         >
           Log out
         </Button>

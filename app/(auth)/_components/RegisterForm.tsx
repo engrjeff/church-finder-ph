@@ -1,8 +1,15 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import Spinner from "@/components/spinner";
+import { useState } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { zodResolver } from '@hookform/resolvers/zod';
+import axios from 'axios';
+import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
+
+import { registerSchema, type RegisterForm } from '@/lib/validations/auth';
+import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
@@ -10,18 +17,13 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Separator } from "@/components/ui/separator";
-import { registerSchema, type RegisterForm } from "@/lib/validations";
-import { zodResolver } from "@hookform/resolvers/zod";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
-import axios from "axios";
-import PasswordInput from "./PasswordInput";
-import GoogleButton from "./GoogleButton";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Separator } from '@/components/ui/separator';
+import Spinner from '@/components/spinner';
+
+import GoogleButton from './GoogleButton';
+import PasswordInput from './PasswordInput';
 
 function RegisterForm() {
   const [loading, setLoading] = useState(false);
@@ -29,15 +31,15 @@ function RegisterForm() {
   const router = useRouter();
 
   const form = useForm<RegisterForm>({
-    defaultValues: { name: "", email: "", password: "" },
+    defaultValues: { name: '', email: '', password: '' },
     resolver: zodResolver(registerSchema),
-    mode: "onChange",
+    mode: 'onChange',
   });
 
   return (
-    <div className='max-w-xs mx-auto space-y-3'>
-      <h1 className='font-bold text-3xl text-center'>Create Your Account</h1>
-      <p className='text-muted-foreground text-center'>
+    <div className="mx-auto max-w-xs space-y-3">
+      <h1 className="text-center text-3xl font-bold">Create Your Account</h1>
+      <p className="text-center text-muted-foreground">
         Start using the site by first creating an account
       </p>
       <Form {...form}>
@@ -46,13 +48,13 @@ function RegisterForm() {
             try {
               setLoading(true);
 
-              const response = await axios.post("/api/register", {
+              const response = await axios.post('/api/register', {
                 name,
                 email,
                 password,
               });
 
-              router.replace("/signin");
+              router.replace('/signin');
 
               router.refresh();
             } catch (error) {
@@ -61,22 +63,22 @@ function RegisterForm() {
                   toast.error(error.response?.data?.error);
                 }
               } else {
-                toast.error("Server Error: Something went wrong");
+                toast.error('Server Error: Something went wrong');
               }
             } finally {
               setLoading(false);
             }
           })}
-          className='space-y-4'
+          className="space-y-4"
         >
           <FormField
             control={form.control}
-            name='name'
+            name="name"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Name</FormLabel>
                 <FormControl>
-                  <Input placeholder='Enter your name' {...field} />
+                  <Input placeholder="Enter your name" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -84,14 +86,14 @@ function RegisterForm() {
           />
           <FormField
             control={form.control}
-            name='email'
+            name="email"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
                   <Input
-                    type='email'
-                    placeholder='youremail@example.com'
+                    type="email"
+                    placeholder="youremail@example.com"
                     {...field}
                   />
                 </FormControl>
@@ -101,7 +103,7 @@ function RegisterForm() {
           />
           <FormField
             control={form.control}
-            name='password'
+            name="password"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Password</FormLabel>
@@ -112,21 +114,21 @@ function RegisterForm() {
               </FormItem>
             )}
           />
-          <Button className='w-full' disabled={loading}>
-            {loading ? <Spinner /> : "Register"}
+          <Button className="w-full" disabled={loading}>
+            {loading ? <Spinner /> : 'Register'}
           </Button>
         </form>
       </Form>
-      <div className='py-4 relative'>
+      <div className="relative py-4">
         <Separator />
-        <span className='text-sm absolute top-2.5 left-1/2 -translate-y-1.5 -translate-x-1/2 px-1 bg-background'>
+        <span className="absolute left-1/2 top-2.5 -translate-x-1/2 -translate-y-1.5 bg-background px-1 text-sm">
           or continue with
         </span>
       </div>
       <GoogleButton />
-      <p className='text-sm text-center pt-4'>
-        Already have an account?{" "}
-        <Link href='/signin' className='font-medium text-primary'>
+      <p className="pt-4 text-center text-sm">
+        Already have an account?{' '}
+        <Link href="/signin" className="font-medium text-primary">
           Log In
         </Link>
       </p>

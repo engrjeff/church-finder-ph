@@ -1,9 +1,15 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { useState } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { signIn } from 'next-auth/react';
+import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 
-import Spinner from "@/components/spinner";
+import { loginSchema, type LoginForm } from '@/lib/validations/auth';
+import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
@@ -11,18 +17,13 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Separator } from "@/components/ui/separator";
-import { loginSchema, type LoginForm } from "@/lib/validations";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { signIn } from "next-auth/react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
-import PasswordInput from "./PasswordInput";
-import GoogleButton from "./GoogleButton";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Separator } from '@/components/ui/separator';
+import Spinner from '@/components/spinner';
+
+import GoogleButton from './GoogleButton';
+import PasswordInput from './PasswordInput';
 
 function SignInForm() {
   const [loading, setLoading] = useState(false);
@@ -30,52 +31,52 @@ function SignInForm() {
   const router = useRouter();
 
   const form = useForm<LoginForm>({
-    defaultValues: { email: "", password: "" },
+    defaultValues: { email: '', password: '' },
     resolver: zodResolver(loginSchema),
-    mode: "onChange",
+    mode: 'onChange',
   });
 
   return (
-    <div className='max-w-xs mx-auto space-y-3'>
-      <h1 className='font-bold text-3xl text-center'>
-        Welcome to <span className='block'>Church Finder PH</span>
+    <div className="mx-auto max-w-xs space-y-3">
+      <h1 className="text-center text-3xl font-bold">
+        Welcome to <span className="block">Church Finder PH</span>
       </h1>
-      <p className='text-muted-foreground text-center'>
+      <p className="text-center text-muted-foreground">
         Log in to your account
       </p>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(async ({ email, password }) => {
             setLoading(true);
-            const response = await signIn("credentials", {
+            const response = await signIn('credentials', {
               email,
               password,
               redirect: false,
             });
 
             if (!response?.ok) {
-              toast.error("No account found");
+              toast.error('No account found');
               setLoading(false);
               return;
             }
 
-            toast.success("Welcome back!");
+            toast.success('Welcome back!');
 
-            router.replace("/me");
+            router.replace('/me');
             router.refresh();
           })}
-          className='space-y-4'
+          className="space-y-4"
         >
           <FormField
             control={form.control}
-            name='email'
+            name="email"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
                   <Input
-                    type='email'
-                    placeholder='youremail@example.com'
+                    type="email"
+                    placeholder="youremail@example.com"
                     {...field}
                   />
                 </FormControl>
@@ -85,7 +86,7 @@ function SignInForm() {
           />
           <FormField
             control={form.control}
-            name='password'
+            name="password"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Password</FormLabel>
@@ -96,22 +97,22 @@ function SignInForm() {
               </FormItem>
             )}
           />
-          <Button className='w-full' disabled={loading}>
-            {loading ? <Spinner /> : "Sign In"}
+          <Button className="w-full" disabled={loading}>
+            {loading ? <Spinner /> : 'Sign In'}
           </Button>
         </form>
       </Form>
-      <div className='py-4 relative'>
+      <div className="relative py-4">
         <Separator />
-        <span className='text-sm absolute top-2.5 left-1/2 -translate-y-1.5 -translate-x-1/2 px-1 bg-background'>
+        <span className="absolute left-1/2 top-2.5 -translate-x-1/2 -translate-y-1.5 bg-background px-1 text-sm">
           or continue with
         </span>
       </div>
       <GoogleButton />
 
-      <p className='text-sm text-center pt-4'>
-        No account yet?{" "}
-        <Link href='/register' className='font-medium text-primary'>
+      <p className="pt-4 text-center text-sm">
+        No account yet?{' '}
+        <Link href="/register" className="font-medium text-primary">
           Create an Account
         </Link>
       </p>

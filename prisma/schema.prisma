@@ -46,6 +46,8 @@ model User {
   image          String?
   accounts       Account[]
   sessions       Session[]
+
+  church_list Church[]
 }
 
 model VerificationToken {
@@ -54,4 +56,111 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+enum PublishStatus {
+  DRAFT
+  PUBLISHED
+  INACTIVE
+}
+
+// CHURCH SCHEMA
+model Church {
+  id              String @id @default(cuid())
+  name            String
+  logo            String
+  welcome_message String
+
+  region   String
+  province String
+  city     String
+  barangay String
+  street   String
+
+  full_address String
+
+  status PublishStatus
+
+  user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id String
+
+  profile         ChurchProfile?
+  contact_details ChurchContact?
+  pastor_details  Pastor?
+  church_map      ChurchMap?
+  church_media    ChurchMedia?
+
+  steps_completed String[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ChurchProfile {
+  id                  String  @id @default(cuid())
+  mission             String?
+  vision              String?
+  church_size         Int
+  communion_frequency String
+
+  church    Church @relation(fields: [church_id], references: [id])
+  church_id String @unique
+
+  services        Json[]
+  ministries      Json[]
+  public_services Json[]
+  confessions     Json[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ChurchContact {
+  id      String  @id @default(cuid())
+  email   String
+  website String?
+
+  contact_numbers Json[]
+  social_links    Json[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  church    Church @relation(fields: [church_id], references: [id])
+  church_id String @unique
+}
+
+model Pastor {
+  id    String  @id @default(cuid())
+  photo String?
+  name  String
+  bio   String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  church    Church @relation(fields: [church_id], references: [id])
+  church_id String @unique
+}
+
+model ChurchMap {
+  id        String @id @default(cuid())
+  landmarks Json[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  church    Church @relation(fields: [church_id], references: [id])
+  church_id String @unique
+}
+
+model ChurchMedia {
+  id      String @id @default(cuid())
+  gallery Json[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  church    Church @relation(fields: [church_id], references: [id])
+  church_id String @unique
 }

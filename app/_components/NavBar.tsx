@@ -1,28 +1,16 @@
-import { buttonVariants } from "@/components/ui/button";
-import Link from "next/link";
+import { siteLinks } from '@/lib/site';
+
+import NavItem from './NavItem';
 
 async function NavBar() {
   return (
-    <nav className='flex justify-between h-full items-center'>
-      <ul className='flex items-center gap-2'>
-        <li>
-          <Link className={buttonVariants({ variant: "ghost" })} href='/'>
-            Churches
-          </Link>
-        </li>
-        <li>
-          <Link className={buttonVariants({ variant: "ghost" })} href='/about'>
-            About
-          </Link>
-        </li>
-        <li>
-          <Link
-            className={buttonVariants({ variant: "ghost" })}
-            href='/contact'
-          >
-            Contact Us
-          </Link>
-        </li>
+    <nav className="flex h-full items-center justify-between">
+      <ul className="flex items-center gap-2">
+        {siteLinks.map((siteLink) => (
+          <li key={`site-link-${siteLink.label}`}>
+            <NavItem href={siteLink.path}>{siteLink.label}</NavItem>
+          </li>
+        ))}
       </ul>
     </nav>
   );

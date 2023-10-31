@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import React from "react";
-import toast from "react-hot-toast";
+import React from 'react';
+import toast from 'react-hot-toast';
 
 function PersonalPage() {
   return (
     <div>
-      <button onClick={() => toast.success("Success!")}>Show Toast</button>
+      <button onClick={() => toast.success('Success!')}>Show Toast</button>
     </div>
   );
 }
