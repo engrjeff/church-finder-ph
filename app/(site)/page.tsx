@@ -7,15 +7,6 @@ import { buttonVariants } from '@/components/ui/button';
 export default function Home() {
   return (
     <section className="mx-auto flex h-full max-w-2xl flex-col items-center justify-center space-y-6 text-center">
-      <div
-        aria-hidden="true"
-        className="absolute left-0 top-0 -z-10 h-[500px] w-[500px] rounded-full bg-gradient-to-tr from-violet-700 to-violet-500 opacity-25 blur-[100px]"
-      ></div>
-      <div
-        aria-hidden="true"
-        className="absolute -right-60 -top-60 -z-10 h-[500px] w-[500px] rounded-full bg-gradient-to-tr from-violet-700 to-violet-500 opacity-10 blur-[100px]"
-      ></div>
-
       <span className="rounded-full rounded-bl-none bg-violet-900 p-3 text-sm font-medium text-white">
         Welcome!
       </span>

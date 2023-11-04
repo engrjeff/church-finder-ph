@@ -1,6 +1,7 @@
 import Link from 'next/link';
 
 import getSession from '@/lib/getServerSession';
+import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
 import { ThemeToggler } from '@/components/theme-toggler';
 
@@ -22,7 +23,10 @@ async function Header() {
           {session ? (
             <UserMenu />
           ) : (
-            <Link href="/signin" className={buttonVariants()}>
+            <Link
+              href="/signin"
+              className={cn(buttonVariants(), 'rounded-full')}
+            >
               Sign In
             </Link>
           )}

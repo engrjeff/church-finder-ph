@@ -4,6 +4,7 @@ import { type ComponentProps } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
+import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
 
 function NavItem(props: ComponentProps<typeof Link>) {
@@ -13,7 +14,10 @@ function NavItem(props: ComponentProps<typeof Link>) {
 
   return (
     <Link
-      className={buttonVariants({ variant: isActive ? 'default' : 'ghost' })}
+      className={cn(
+        buttonVariants({ variant: isActive ? 'default' : 'ghost' }),
+        'rounded-full'
+      )}
       {...props}
     />
   );

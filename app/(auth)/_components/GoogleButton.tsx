@@ -23,7 +23,7 @@ function GoogleButton() {
     <Button
       onClick={handleSignInWithGoogle}
       variant="outline"
-      className="w-full justify-center"
+      className="h-12 w-full justify-center"
       disabled={isLoading}
       type="button"
     >

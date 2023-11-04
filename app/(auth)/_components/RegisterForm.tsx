@@ -37,7 +37,7 @@ function RegisterForm() {
   });
 
   return (
-    <div className="mx-auto max-w-xs space-y-3">
+    <div className="mx-auto max-w-sm space-y-3">
       <h1 className="text-center text-3xl font-bold">Create Your Account</h1>
       <p className="text-center text-muted-foreground">
         Start using the site by first creating an account
@@ -114,9 +114,11 @@ function RegisterForm() {
               </FormItem>
             )}
           />
-          <Button className="w-full" disabled={loading}>
-            {loading ? <Spinner /> : 'Register'}
-          </Button>
+          <div className="pt-6">
+            <Button className="w-full" disabled={loading}>
+              {loading ? <Spinner /> : 'Register'}
+            </Button>
+          </div>
         </form>
       </Form>
       <div className="relative py-4">

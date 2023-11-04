@@ -37,7 +37,7 @@ function SignInForm() {
   });
 
   return (
-    <div className="mx-auto max-w-xs space-y-3">
+    <div className="mx-auto max-w-sm space-y-3">
       <h1 className="text-center text-3xl font-bold">
         Welcome to <span className="block">Church Finder PH</span>
       </h1>
@@ -97,9 +97,11 @@ function SignInForm() {
               </FormItem>
             )}
           />
-          <Button className="w-full" disabled={loading}>
-            {loading ? <Spinner /> : 'Sign In'}
-          </Button>
+          <div className="pt-6">
+            <Button className="h-12 w-full" disabled={loading}>
+              {loading ? <Spinner /> : 'Sign In'}
+            </Button>
+          </div>
         </form>
       </Form>
       <div className="relative py-4">

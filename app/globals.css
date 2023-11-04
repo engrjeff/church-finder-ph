@@ -54,7 +54,7 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground min-h-screen flex flex-col selection:bg-primary selection:text-white;
+    @apply bg-background text-foreground min-h-screen flex flex-col selection:bg-primary selection:text-white relative overflow-x-hidden;
   }
 
   .gradient-circle {
