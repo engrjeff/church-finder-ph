@@ -115,7 +115,7 @@ function RegisterForm() {
             )}
           />
           <div className="pt-6">
-            <Button className="w-full" disabled={loading}>
+            <Button className="h-12 w-full" disabled={loading}>
               {loading ? <Spinner /> : 'Register'}
             </Button>
           </div>

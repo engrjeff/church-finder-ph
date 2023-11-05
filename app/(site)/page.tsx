@@ -1,8 +1,10 @@
 import Link from 'next/link';
-import { ArrowTopRightIcon, MagnifyingGlassIcon } from '@radix-ui/react-icons';
+import { ArrowTopRightIcon } from '@radix-ui/react-icons';
 
 import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
+
+import SearchChurchField from './_components/SearchChurchField';
 
 export default function Home() {
   return (
@@ -18,22 +20,17 @@ export default function Home() {
         where you can know Christ truly and serve Him fully.
       </p>
 
-      <div className="space-x-4 pt-6">
+      <div className="space-y-4 pt-6">
+        <SearchChurchField />
         <Link
           href="/churches"
-          className={cn(buttonVariants({ size: 'lg' }), 'rounded-full w-60')}
-        >
-          Browse Churches <ArrowTopRightIcon className="ml-2 h-4 w-4" />
-        </Link>
-
-        <button
           className={cn(
-            buttonVariants({ size: 'lg', variant: 'secondary' }),
-            'rounded-full'
+            buttonVariants({ variant: 'outline' }),
+            'h-12 w-[80%] rounded-full text-base'
           )}
         >
-          Find churches near me <MagnifyingGlassIcon className="ml-2 h-4 w-4" />
-        </button>
+          Browse Churches <ArrowTopRightIcon className="ml-3 h-5 w-5" />
+        </Link>
       </div>
     </section>
   );

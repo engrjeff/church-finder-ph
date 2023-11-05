@@ -1,8 +1,18 @@
+import { GridIcon, ReaderIcon } from '@radix-ui/react-icons';
+
 import UserSideNavLink from './UserSideNavLink';
 
 const userNavItems = [
-  { label: 'Listings', href: '/me/church' },
-  { label: 'Reviews', href: '/me/reviews' },
+  {
+    label: 'Listings',
+    href: '/me/church',
+    icon: <GridIcon className="mr-3 h-4 w-4" />,
+  },
+  {
+    label: 'Reviews',
+    href: '/me/reviews',
+    icon: <ReaderIcon className="mr-3 h-4 w-4" />,
+  },
 ];
 
 function UserSideNavigation() {
@@ -10,7 +20,10 @@ function UserSideNavigation() {
     <ul className="space-y-2">
       {userNavItems.map((navItem) => (
         <li key={`user-nav-${navItem.label}`}>
-          <UserSideNavLink href={navItem.href}>{navItem.label}</UserSideNavLink>
+          <UserSideNavLink href={navItem.href}>
+            <span>{navItem.icon}</span>
+            <span>{navItem.label}</span>
+          </UserSideNavLink>
         </li>
       ))}
     </ul>

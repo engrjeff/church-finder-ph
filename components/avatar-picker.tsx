@@ -95,7 +95,7 @@ const AvatarPicker = ({
                 size="sm"
                 className="mt-2"
               >
-                Pick Image
+                Browse Photo
               </Button>
             </DialogTrigger>
             <DialogContent>

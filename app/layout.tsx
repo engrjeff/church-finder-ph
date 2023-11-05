@@ -12,7 +12,10 @@ import Header from './_components/Header';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Church Finder PH',
+  title: {
+    template: '%s | Church Finder PH',
+    default: 'Church Finder PH',
+  },
   description:
     'Find a biblical church in the Philippines where you will grow and know Christ',
 };

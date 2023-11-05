@@ -1,9 +1,9 @@
 import { type Church } from '@prisma/client';
-import { CubeIcon } from '@radix-ui/react-icons';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardHeader, CardTitle } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
 
 function ChurchCard({ church }: { church: Church }) {
   return (
@@ -13,7 +13,7 @@ function ChurchCard({ church }: { church: Church }) {
           <Avatar className="h-10 w-10">
             <AvatarImage src={church.logo} alt={`${church.name} logo`} />
             <AvatarFallback>
-              <CubeIcon />
+              <Skeleton />
             </AvatarFallback>
           </Avatar>
           <div className="space-y-2">

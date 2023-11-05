@@ -23,7 +23,7 @@ export async function PATCH(
 
     const body = await req.json();
 
-    const validation = basicInfoSchema.safeParse(body);
+    const validation = basicInfoSchema.partial().safeParse(body);
 
     if (!validation.success) {
       return NextResponse.json(
@@ -47,7 +47,6 @@ export async function PATCH(
         { status: 'failed', error: 'Church not found' },
         { status: 404 }
       );
-
     const updatedChurch = await prisma.church.update({
       where: {
         id: params.id,

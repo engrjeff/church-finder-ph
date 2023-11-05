@@ -13,7 +13,10 @@ async function EditChurchPage({ params }: { params: { id: string } }) {
   return (
     <>
       <div className="flex items-center gap-3 border-b pb-6">
-        <BackLink href="/me/church" aria-label="Back to church list" />
+        <BackLink
+          href={`/me/church/${church.id}`}
+          aria-label="Back to church list"
+        />
         <h1 className="text-xl font-bold">Update {church.name}</h1>
       </div>
       <ChurchFormSteps />

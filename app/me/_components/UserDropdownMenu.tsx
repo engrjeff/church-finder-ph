@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import { ChevronDownIcon } from '@radix-ui/react-icons';
 import { useSession } from 'next-auth/react';
@@ -17,14 +18,16 @@ import {
 import { Skeleton } from '@/components/ui/skeleton';
 
 function UserDropdownMenu() {
+  const [open, setOpen] = useState(false);
   const session = useSession();
 
-  if (session.status !== 'authenticated') return <Skeleton className="h-16" />;
+  if (session.status !== 'authenticated')
+    return <Skeleton className="h-16 bg-muted" />;
 
   const user = session.data?.user;
 
   return (
-    <DropdownMenu>
+    <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
@@ -46,7 +49,7 @@ function UserDropdownMenu() {
           <ChevronDownIcon className="ml-auto" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-[240px]">
+      <DropdownMenuContent className="w-[240px]" onClick={() => setOpen(false)}>
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem>Profile</DropdownMenuItem>

@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import { ChevronDownIcon } from '@radix-ui/react-icons';
 import { useSession } from 'next-auth/react';
@@ -19,12 +20,13 @@ import {
 import SignoutConfirmDialog from './SignoutConfirmDialog';
 
 function UserMenu() {
+  const [open, setOpen] = useState(false);
   const session = useSession();
 
   const user = session.data?.user;
 
   return (
-    <DropdownMenu>
+    <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger asChild>
         <Button
           aria-label="menu"
@@ -44,7 +46,8 @@ function UserMenu() {
       <DropdownMenuContent className="w-56" align="end">
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuGroup>
+
+        <DropdownMenuGroup onClick={() => setOpen(false)}>
           <DropdownMenuItem>Profile</DropdownMenuItem>
           <DropdownMenuItem>
             <Link href="/me">Dashboard</Link>
@@ -54,7 +57,7 @@ function UserMenu() {
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuGroup>
+        <DropdownMenuGroup onClick={() => setOpen(false)}>
           <DropdownMenuItem>
             <Link href="/me/church/new">Add My Church</Link>
           </DropdownMenuItem>

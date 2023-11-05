@@ -1,3 +1,4 @@
+import { PublishStatus } from '@prisma/client';
 import * as z from 'zod';
 
 export const basicInfoSchema = z.object({
@@ -30,6 +31,8 @@ export const basicInfoSchema = z.object({
     .string({ required_error: 'Church logo is required.' })
     .url({ message: 'Invalid church logo url' }),
   full_address: z.string(),
+
+  status: z.nativeEnum(PublishStatus).default('DRAFT'),
 });
 
 export const churchProfileSchema = z.object({

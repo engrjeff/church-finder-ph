@@ -58,7 +58,7 @@ function Autocomplete({
         </Button>
       </PopoverTrigger>
       <PopoverContent
-        className="max-h-full w-full overflow-y-auto p-0"
+        className="max-h-[400px] w-full overflow-y-auto p-0"
         align="start"
       >
         <Command

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { revalidatePath } from 'next/cache';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -56,6 +57,7 @@ const defaultValues: BasicInfoData = {
   barangay: '',
   street: '',
   full_address: '',
+  status: 'DRAFT',
 };
 
 function BasicInfoForm({ basicInfoData }: { basicInfoData?: BasicInfoData }) {
@@ -141,6 +143,8 @@ function BasicInfoForm({ basicInfoData }: { basicInfoData?: BasicInfoData }) {
       form.reset();
 
       setNewChurchId(churchId);
+
+      revalidatePath('/me/church');
     }
   };
 

@@ -1,26 +1,40 @@
+import { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import prisma from '@/prisma/client';
 import { Pencil1Icon } from '@radix-ui/react-icons';
 
-import { ChurchProfileData } from '@/lib/validations/church';
 import { buttonVariants } from '@/components/ui/button';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import BackLink from '@/components/back-link';
 
+import ChurchContactDetails from '../../_components/ChurchContactDetails';
 import ChurchProfileDetails from '../../_components/ChurchProfileDetails';
+import ChurchPublishButton from '../../_components/ChurchPublishButton';
+import { getChurchById } from '../../services/church';
 
-async function ChurchDetailsPage({ params }: { params: { id: string } }) {
-  const church = await prisma.church.findUnique({
-    where: { id: params.id },
-    include: { profile: true },
-  });
+interface Props {
+  params: {
+    id: string;
+  };
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const church = await getChurchById(params.id);
+
+  return {
+    title: church?.name,
+  };
+}
+
+async function ChurchDetailsPage({ params }: Props) {
+  const church = await getChurchById(params.id);
 
   if (!church) return notFound();
 
   return (
     <>
-      <div className="mb-6 flex items-center gap-3 border-b pb-6">
+      <div className="flex items-center gap-3 border-b pb-6">
         <BackLink href="/me/church" aria-label="Back to church list" />
         <Image
           src={church.logo}
@@ -37,10 +51,29 @@ async function ChurchDetailsPage({ params }: { params: { id: string } }) {
           <span className="sr-only">edit {church.name}</span>
           <Pencil1Icon className="h-4 w-4" />
         </Link>
+        <div className="ml-auto">
+          <ChurchPublishButton
+            churchId={church.id}
+            churchStatus={church.status}
+          />
+        </div>
       </div>
-      <ChurchProfileDetails
-        churchProfile={church.profile as unknown as ChurchProfileData}
-      />
+      <Tabs defaultValue="church-profile">
+        <TabsList>
+          <TabsTrigger value="church-profile">Church Profile</TabsTrigger>
+          <TabsTrigger value="church-contact-info">Contact Info</TabsTrigger>
+          <TabsTrigger value="pastor-profile">
+            Pastor&apos;s Profile
+          </TabsTrigger>
+          <TabsTrigger value="media">Media</TabsTrigger>
+        </TabsList>
+        <TabsContent value="church-profile">
+          <ChurchProfileDetails churchId={church.id} />
+        </TabsContent>
+        <TabsContent value="church-contact-info">
+          <ChurchContactDetails churchId={church.id} />
+        </TabsContent>
+      </Tabs>
     </>
   );
 }
