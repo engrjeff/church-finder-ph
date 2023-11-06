@@ -1,11 +1,17 @@
 import { type Metadata } from 'next';
 
+import ChurchList from '../_components/ChurchList';
+
 export const metadata: Metadata = {
   title: 'Churches',
 };
 
 function ChurchesPage() {
-  return <div>ChurchesPage</div>;
+  return (
+    <section>
+      <ChurchList />
+    </section>
+  );
 }
 
 export default ChurchesPage;

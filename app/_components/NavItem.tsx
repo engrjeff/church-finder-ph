@@ -7,7 +7,7 @@ import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
 
-function NavItem(props: ComponentProps<typeof Link>) {
+function NavItem({ className, ...props }: ComponentProps<typeof Link>) {
   const pathname = usePathname();
 
   const isActive = pathname === props.href;
@@ -16,7 +16,8 @@ function NavItem(props: ComponentProps<typeof Link>) {
     <Link
       className={cn(
         buttonVariants({ variant: isActive ? 'default' : 'ghost' }),
-        'rounded-full'
+        'rounded-full',
+        className
       )}
       {...props}
     />

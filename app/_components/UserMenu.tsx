@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { ChevronDownIcon } from '@radix-ui/react-icons';
 import { useSession } from 'next-auth/react';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -31,7 +30,7 @@ function UserMenu() {
         <Button
           aria-label="menu"
           variant="secondary"
-          className="h-auto w-auto gap-3 p-1.5"
+          className="h-auto w-auto gap-3 rounded-full p-1.5"
         >
           <Avatar className="h-6 w-6">
             <AvatarImage src={user?.image!} alt={user?.name!} />
@@ -39,12 +38,10 @@ function UserMenu() {
               {user?.name?.substring(0, 2).toUpperCase()}
             </AvatarFallback>
           </Avatar>
-          <span className="text-xs">{user?.name}</span>
-          <ChevronDownIcon />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end">
-        <DropdownMenuLabel>My Account</DropdownMenuLabel>
+        <DropdownMenuLabel> {user?.name}</DropdownMenuLabel>
         <DropdownMenuSeparator />
 
         <DropdownMenuGroup onClick={() => setOpen(false)}>
