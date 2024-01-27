@@ -21,7 +21,7 @@ function SearchChurchField() {
     <Dialog>
       <DialogTrigger asChild>
         <Button className="h-12 w-[80%] rounded-full text-base">
-          Find a Church <MagnifyingGlassIcon className="ml-3 h-5 w-5" />{' '}
+          Find a Church <MagnifyingGlassIcon className="ml-3 size-5" />{' '}
         </Button>
       </DialogTrigger>
       <DialogContent className="p-0">

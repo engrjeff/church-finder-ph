@@ -1,5 +1,8 @@
+import Link from 'next/link';
 import { BookmarkIcon, CalendarIcon, CheckIcon } from '@radix-ui/react-icons';
 
+import { formatTime } from '@/lib/utils';
+import { buttonVariants } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import RenderIf from '@/components/render-if';
 
@@ -7,7 +10,19 @@ import { getChurchProfile } from '../services/church';
 
 async function ChurchProfileDetails({ churchId }: { churchId: string }) {
   const churchProfile = await getChurchProfile(churchId);
-  if (!churchProfile) return null;
+
+  if (!churchProfile)
+    return (
+      <div className="py-4 text-center">
+        <p className="mb-2 text-muted-foreground">No church profile yet.</p>
+        <Link
+          href={`/me/church/${churchId}/edit?step=church-profile`}
+          className={buttonVariants()}
+        >
+          Create Church Profile
+        </Link>
+      </div>
+    );
 
   return (
     <div className="space-y-4 py-4">
@@ -37,11 +52,11 @@ async function ChurchProfileDetails({ churchId }: { churchId: string }) {
             {churchProfile.services.map((service, idx) => (
               <li key={`service-${idx}`}>
                 <div className="flex items-start gap-x-4">
-                  <CalendarIcon className="h-4 w-4" />
+                  <CalendarIcon className="size-4" />
                   <div>
                     <p className="mb-1 text-sm leading-none">{service.title}</p>
                     <p className="text-xs text-muted-foreground">
-                      Every {service.day} at {service.time}
+                      Every {service.day} at {formatTime(service.time)}
                     </p>
                   </div>
                 </div>
@@ -59,7 +74,7 @@ async function ChurchProfileDetails({ churchId }: { churchId: string }) {
             {churchProfile.ministries.map((ministry, idx) => (
               <li key={`ministry-${idx}`}>
                 <div className="flex items-start gap-x-4">
-                  <CheckIcon className="h-4 w-4" />
+                  <CheckIcon className="size-4" />
                   <p className="text-sm leading-none">{ministry.title}</p>
                 </div>
               </li>
@@ -76,7 +91,7 @@ async function ChurchProfileDetails({ churchId }: { churchId: string }) {
             {churchProfile.public_services.map((publicService, idx) => (
               <li key={`public-service-${idx}`}>
                 <div className="flex items-start gap-x-4">
-                  <CheckIcon className="h-4 w-4" />
+                  <CheckIcon className="size-4" />
                   <p className="text-sm leading-none">{publicService.title}</p>
                 </div>
               </li>
@@ -94,7 +109,7 @@ async function ChurchProfileDetails({ churchId }: { churchId: string }) {
               {churchProfile.confessions?.map((confession, idx) => (
                 <li key={`confessions-${idx}`}>
                   <div className="flex items-start gap-x-4">
-                    <BookmarkIcon className="h-4 w-4" />
+                    <BookmarkIcon className="size-4" />
                     <p className="text-sm leading-none">{confession.title}</p>
                   </div>
                 </li>
@@ -110,7 +125,7 @@ async function ChurchProfileDetails({ churchId }: { churchId: string }) {
         <CardContent>
           <ul className="space-y-3">
             <li className="flex items-start gap-x-4">
-              <CheckIcon className="h-4 w-4" />
+              <CheckIcon className="size-4" />
               <div>
                 <p className="text-sm">
                   About {churchProfile.church_size} people
@@ -119,7 +134,7 @@ async function ChurchProfileDetails({ churchId }: { churchId: string }) {
               </div>
             </li>
             <li className="flex items-start gap-x-4">
-              <CheckIcon className="h-4 w-4" />
+              <CheckIcon className="size-4" />
               <div>
                 <p className="text-sm">{churchProfile.communion_frequency}</p>
                 <p className="text-xs text-muted-foreground">

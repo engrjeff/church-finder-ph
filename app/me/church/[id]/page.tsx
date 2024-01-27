@@ -41,7 +41,7 @@ async function ChurchDetailsPage({ params }: Props) {
           alt={`${church.name} logo`}
           width={40}
           height={40}
-          className="h-10 w-10 rounded-full"
+          className="size-10 rounded-full"
         />
         <h1 className="text-xl font-bold">{church.name}</h1>
         <Link
@@ -49,12 +49,13 @@ async function ChurchDetailsPage({ params }: Props) {
           className={buttonVariants({ size: 'icon', variant: 'ghost' })}
         >
           <span className="sr-only">edit {church.name}</span>
-          <Pencil1Icon className="h-4 w-4" />
+          <Pencil1Icon className="size-4" />
         </Link>
         <div className="ml-auto">
           <ChurchPublishButton
             churchId={church.id}
             churchStatus={church.status}
+            isPublishable={church.steps_completed.length > 2}
           />
         </div>
       </div>

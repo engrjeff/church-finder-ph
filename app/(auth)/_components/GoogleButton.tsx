@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { signIn } from 'next-auth/react';
-import toast from 'react-hot-toast';
 
 import { Button } from '@/components/ui/button';
 import Spinner from '@/components/spinner';
@@ -13,8 +12,6 @@ function GoogleButton() {
   const handleSignInWithGoogle = async () => {
     setIsLoading(true);
     await signIn('google');
-
-    toast.success('Welcome back!');
 
     setIsLoading(false);
   };

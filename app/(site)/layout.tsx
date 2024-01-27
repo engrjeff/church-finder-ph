@@ -6,7 +6,7 @@ function SiteLayout({ children }: { children: ReactNode }) {
   return (
     <>
       <Gradients />
-      <div className="container py-20">{children}</div>
+      <main>{children}</main>
     </>
   );
 }

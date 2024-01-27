@@ -224,7 +224,7 @@ function ChurchContactForm({
                         type="button"
                         onClick={() => contactNumbers.remove(index)}
                       >
-                        <Cross1Icon className="h-5 w-5 text-destructive" />
+                        <Cross1Icon className="size-5 text-destructive" />
                       </Button>
                     )}
                   </div>
@@ -273,7 +273,7 @@ function ChurchContactForm({
                                 'YouTube',
                                 'Tiktok',
                                 'Pinterest',
-                                'Twitter (X)',
+                                'Twitter',
                               ].map((option) => (
                                 <SelectItem key={option} value={option}>
                                   {option}
@@ -320,7 +320,7 @@ function ChurchContactForm({
                         type="button"
                         onClick={() => socialLinks.remove(index)}
                       >
-                        <Cross1Icon className="h-5 w-5 text-destructive" />
+                        <Cross1Icon className="size-5 text-destructive" />
                       </Button>
                     )}
                   </div>

@@ -30,9 +30,9 @@ function UserMenu() {
         <Button
           aria-label="menu"
           variant="secondary"
-          className="h-auto w-auto gap-3 rounded-full p-1.5"
+          className="size-auto gap-3 rounded-full p-1.5"
         >
-          <Avatar className="h-6 w-6">
+          <Avatar className="size-6">
             <AvatarImage src={user?.image!} alt={user?.name!} />
             <AvatarFallback className="bg-primary">
               {user?.name?.substring(0, 2).toUpperCase()}
@@ -45,20 +45,24 @@ function UserMenu() {
         <DropdownMenuSeparator />
 
         <DropdownMenuGroup onClick={() => setOpen(false)}>
-          <DropdownMenuItem>Profile</DropdownMenuItem>
-          <DropdownMenuItem>
-            <Link href="/me">Dashboard</Link>
+          <DropdownMenuItem asChild>
+            <Link href="/me" className="block">
+              Dashboard
+            </Link>
           </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Link href="/me/church">My Listings</Link>
+          <DropdownMenuItem asChild>
+            <Link href="/me/church" className="block">
+              My Listings
+            </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuGroup onClick={() => setOpen(false)}>
-          <DropdownMenuItem>
-            <Link href="/me/church/new">Add My Church</Link>
+          <DropdownMenuItem asChild>
+            <Link href="/me/church/new" className="block">
+              Add My Church
+            </Link>
           </DropdownMenuItem>
-          <DropdownMenuItem>Favorites</DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>

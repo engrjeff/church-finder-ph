@@ -31,7 +31,7 @@ function FileDropZone({
   onSave,
   onRemoveExisting,
   onClearAll,
-  maxItems = 4,
+  maxItems = 6,
 }: FileDropZoneProps) {
   const [files, filesMethods] = useList<File>([]);
 
@@ -93,23 +93,10 @@ function FileDropZone({
 
   return (
     <div>
-      <div
-        {...getRootProps()}
-        className={cn(
-          'py-10 border border-dashed text-center rounded transition-colors hover:border-primary hover:bg-primary/20',
-          isDragActive ? 'border-primary bg-primary/20' : '',
-          currentTotal >= maxItems ? 'pointer-events-none opacity-60' : ''
-        )}
-      >
-        <input {...getInputProps()} />
-        <p>Drag n drop image files here, or click to select files</p>
-        <em className="text-sm text-muted-foreground">(Maximum of 4 images)</em>
-      </div>
-
       {alertShown ? (
-        <Alert className="mt-6 border border-amber-600 bg-amber-600/10 text-amber-600">
+        <Alert className="my-6 rounded border border-amber-600 bg-amber-600/10 text-amber-600">
           <AlertTitle>
-            <ExclamationTriangleIcon className="mr-2 inline h-4 w-4" />
+            <ExclamationTriangleIcon className="mr-2 inline size-4" />
             Too many files
           </AlertTitle>
           <AlertDescription>
@@ -118,7 +105,7 @@ function FileDropZone({
         </Alert>
       ) : null}
 
-      <ul className="mt-6 space-y-2">
+      <ul className="my-6 grid grid-cols-3 gap-4 empty:hidden">
         {fileData?.map((file, index) => (
           <li key={file.name}>
             <ImageListItem
@@ -139,6 +126,23 @@ function FileDropZone({
             </li>
           ))}
       </ul>
+
+      {currentTotal >= maxItems ? null : (
+        <div
+          {...getRootProps()}
+          className={cn(
+            'py-10 border cursor-pointer  border-dashed text-center rounded transition-colors hover:border-primary hover:bg-primary/20',
+            isDragActive ? 'border-primary bg-primary/20' : '',
+            currentTotal >= maxItems ? 'pointer-events-none opacity-60' : ''
+          )}
+        >
+          <input {...getInputProps()} />
+          <p>Drag n drop image files here, or click to select files</p>
+          <em className="text-sm text-muted-foreground">
+            (Maximum of {maxItems} images)
+          </em>
+        </div>
+      )}
 
       <div className="flex justify-end space-x-4 pt-4">
         <Button
@@ -186,20 +190,24 @@ const ImageListItem = ({ fileItem, url, onRemove }: ImageListItemProps) => {
   }, [fileItem, url]);
 
   return (
-    <div className="flex items-center gap-4 rounded border pr-4">
+    <div className="relative aspect-video overflow-hidden rounded-lg border bg-black">
       <img
-        className="h-20 w-20 object-cover"
+        className="size-full object-contain"
         src={previewUrl}
         alt={fileItem.name}
       />
-      <div className="space-y-3 p-4">
+      <div className="hidden space-y-3 p-4">
         <h6 className="text-sm font-medium">{fileItem.name}</h6>
         <p className="text-xs text-muted-foreground">{fileItem.size}</p>
       </div>
-      <div className="ml-auto">
-        <Button variant="ghost" size="icon" onClick={onRemove}>
-          <span className="sr-only">remove file</span>
-          <Cross2Icon className="h-5 w-5" />
+      <div className="absolute right-1 top-1">
+        <Button
+          size="icon"
+          className="rounded-full bg-black/30 hover:bg-black/40"
+          onClick={onRemove}
+        >
+          <span className="sr-only">remove photo</span>
+          <Cross2Icon className="size-4" />
         </Button>
       </div>
     </div>

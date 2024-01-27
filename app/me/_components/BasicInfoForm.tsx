@@ -22,6 +22,7 @@ import {
 import { churchApi } from '@/lib/apiClient';
 import { arrayToMap, cn, errorHandler } from '@/lib/utils';
 import { basicInfoSchema, type BasicInfoData } from '@/lib/validations/church';
+import useFileUpload from '@/hooks/useFileUpload';
 import { Button, buttonVariants } from '@/components/ui/button';
 import {
   Card,
@@ -66,6 +67,8 @@ function BasicInfoForm({ basicInfoData }: { basicInfoData?: BasicInfoData }) {
     defaultValues: basicInfoData ? basicInfoData : defaultValues,
     mode: 'onChange',
   });
+
+  const logoForm = useForm<{ logo: File }>();
 
   const [savingStatus, setSavingStatus] = useState<
     'idle' | 'saving' | 'saving-exit'
@@ -134,8 +137,22 @@ function BasicInfoForm({ basicInfoData }: { basicInfoData?: BasicInfoData }) {
     updateOptions();
   }, [currentProvince, currentRegion, currentCity]);
 
+  const { uploadFiles } = useFileUpload();
+
   const executeCreateChurch = async (data: BasicInfoData) => {
-    const result = await churchApi.basicInfo.create(data);
+    if (!logoForm.getValues('logo')) {
+      form.setError('logo', { message: 'Church Logo is required.' });
+    }
+
+    const res = await uploadFiles([logoForm.getValues('logo')]);
+
+    const formData = { ...data };
+
+    if (res && res.length > 0) {
+      formData.logo = res[0].url;
+    }
+
+    const result = await churchApi.basicInfo.create(formData);
 
     if (result.data.status === 'success') {
       const churchId = result.data.data.id;
@@ -149,9 +166,17 @@ function BasicInfoForm({ basicInfoData }: { basicInfoData?: BasicInfoData }) {
   };
 
   const executeUpdateChurch = async (data: BasicInfoData) => {
-    const result = await churchApi.basicInfo.update(church_id, data);
+    const formData = { ...data };
 
-    console.log(result);
+    if (logoForm.getValues('logo')) {
+      const res = await uploadFiles([logoForm.getValues('logo')]);
+
+      if (res && res.length > 0) {
+        formData.logo = res[0].url;
+      }
+    }
+
+    const result = await churchApi.basicInfo.update(church_id, formData);
 
     if (result.data.status === 'success') {
       toast.success('Update successful!');
@@ -234,16 +259,19 @@ function BasicInfoForm({ basicInfoData }: { basicInfoData?: BasicInfoData }) {
             <form onSubmit={form.handleSubmit(onSubmit, onError)}>
               <fieldset className="space-y-6" disabled={isLoading}>
                 <FormField
-                  control={form.control}
+                  control={logoForm.control}
                   name="logo"
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
                         <AvatarPicker
-                          src={field.value === null ? undefined : field.value}
+                          src={form.watch('logo')}
                           label="Church Logo"
                           desc="Upload a church logo"
-                          onAfterUpload={field.onChange}
+                          onChange={(file, src) => {
+                            field.onChange(file);
+                            form.setValue('logo', src);
+                          }}
                         />
                       </FormControl>
                       <FormMessage />

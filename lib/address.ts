@@ -1,5 +1,5 @@
 // @ts-ignore
-import * as phil from "select-philippines-address";
+import * as phil from 'select-philippines-address';
 
 export interface Region {
   id: number;
@@ -38,7 +38,11 @@ export const getProvincesByRegion = async (
   regionCode: string
 ): Promise<Province[]> => {
   if (!regionCode) return [];
+
   const provinceArr = await phil.provinces(regionCode);
+
+  if (regionCode === '13') return provinceArr?.slice(1) ?? [];
+
   return provinceArr ?? [];
 };
 

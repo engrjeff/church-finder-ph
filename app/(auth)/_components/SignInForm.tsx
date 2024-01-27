@@ -22,7 +22,6 @@ import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import Spinner from '@/components/spinner';
 
-import GoogleButton from './GoogleButton';
 import PasswordInput from './PasswordInput';
 
 function SignInForm() {
@@ -60,7 +59,7 @@ function SignInForm() {
               return;
             }
 
-            toast.success('Welcome back!');
+            toast.success('Logged in!');
 
             router.replace('/me');
             router.refresh();
@@ -104,13 +103,12 @@ function SignInForm() {
           </div>
         </form>
       </Form>
-      <div className="relative py-4">
+      <div className="relative hidden py-4">
         <Separator />
         <span className="absolute left-1/2 top-2.5 -translate-x-1/2 -translate-y-1.5 bg-background px-1 text-sm">
           or continue with
         </span>
       </div>
-      <GoogleButton />
 
       <p className="pt-4 text-center text-sm">
         No account yet?{' '}

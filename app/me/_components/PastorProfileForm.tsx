@@ -13,6 +13,7 @@ import {
   pastorProfileSchema,
   type PastorProfileData,
 } from '@/lib/validations/church';
+import useFileUpload from '@/hooks/useFileUpload';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -53,6 +54,8 @@ function PastorProfileForm({
     mode: 'onChange',
   });
 
+  const photoForm = useForm<{ photo: File }>();
+
   const router = useRouter();
 
   const [savingStatus, setSavingStatus] = useState<
@@ -63,17 +66,31 @@ function PastorProfileForm({
 
   const { id: church_id } = useParams<{ id: string }>();
 
+  const { uploadFiles } = useFileUpload();
+
   const handleSave = async (values: PastorProfileData) => {
+    const formData = { ...values };
+
+    if (!photoForm.getValues('photo')) {
+      form.setError('photo', { message: "Pastor's photo is required." });
+    }
+
+    const res = await uploadFiles([photoForm.getValues('photo')]);
+
+    if (res && res.length > 0) {
+      formData.photo = res[0].url;
+    }
+
     try {
       let result;
       if (pastorProfileId) {
         result = await churchApi.pastorProfile.update(church_id, {
-          ...values,
+          ...formData,
           id: pastorProfileId,
         });
       } else {
         result = await churchApi.pastorProfile.create({
-          ...values,
+          ...formData,
           church_id,
         });
       }
@@ -134,16 +151,19 @@ function PastorProfileForm({
           <form onSubmit={form.handleSubmit(onSubmit, onError)}>
             <fieldset disabled={isLoading} className="space-y-6">
               <FormField
-                control={form.control}
+                control={photoForm.control}
                 name="photo"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
                       <AvatarPicker
-                        src={field.value}
+                        src={form.watch('photo')}
                         label="Photo"
                         desc="Upload a photo"
-                        onAfterUpload={field.onChange}
+                        onChange={(file, src) => {
+                          field.onChange(file);
+                          form.setValue('photo', src);
+                        }}
                       />
                     </FormControl>
                     <FormMessage />

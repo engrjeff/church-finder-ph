@@ -22,7 +22,6 @@ import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import Spinner from '@/components/spinner';
 
-import GoogleButton from './GoogleButton';
 import PasswordInput from './PasswordInput';
 
 function RegisterForm() {
@@ -53,6 +52,8 @@ function RegisterForm() {
                 email,
                 password,
               });
+
+              toast.success('You are now registered! Now log in your account.');
 
               router.replace('/signin');
 
@@ -121,13 +122,12 @@ function RegisterForm() {
           </div>
         </form>
       </Form>
-      <div className="relative py-4">
+      <div className="relative hidden py-4">
         <Separator />
         <span className="absolute left-1/2 top-2.5 -translate-x-1/2 -translate-y-1.5 bg-background px-1 text-sm">
           or continue with
         </span>
       </div>
-      <GoogleButton />
       <p className="pt-4 text-center text-sm">
         Already have an account?{' '}
         <Link href="/signin" className="font-medium text-primary">

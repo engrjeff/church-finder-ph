@@ -8,7 +8,7 @@ import SearchChurchField from './SearchChurchField';
 
 function Hero() {
   return (
-    <section className="mx-auto flex h-full max-w-2xl flex-col items-center justify-center space-y-6 text-center">
+    <section className="mx-auto flex h-full max-w-2xl flex-col items-center justify-center space-y-6 py-20 text-center">
       <span className="rounded-full rounded-bl-none bg-violet-900 p-3 text-sm font-medium text-white">
         Welcome!
       </span>
@@ -29,7 +29,7 @@ function Hero() {
             'h-12 w-[80%] rounded-full text-base'
           )}
         >
-          Browse Churches <ArrowTopRightIcon className="ml-3 h-5 w-5" />
+          Browse Churches <ArrowTopRightIcon className="ml-3 size-5" />
         </Link>
       </div>
     </section>

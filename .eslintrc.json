@@ -3,23 +3,18 @@
     "next/core-web-vitals",
     "next",
     "prettier",
-    "plugin:tailwindcss/recommended"
+    "plugin:tailwindcss/recommended",
+    "plugin:@tanstack/eslint-plugin-query/recommended"
   ],
   "overrides": [
     {
-      "files": [
-        "*.ts",
-        "*.tsx",
-        "*.js"
-      ],
+      "files": ["*.ts", "*.tsx", "*.js"],
       "parser": "@typescript-eslint/parser"
     }
   ],
   "settings": {
     "tailwindcss": {
-      "whitelist": [
-        "destructive"
-      ]
+      "whitelist": ["destructive"]
     }
   }
 }

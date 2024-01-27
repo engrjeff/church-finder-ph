@@ -70,6 +70,7 @@ model Church {
   name            String
   logo            String
   welcome_message String
+  slug            String
 
   region   String
   province String
@@ -155,8 +156,9 @@ model ChurchMap {
 }
 
 model ChurchMedia {
-  id      String @id @default(cuid())
-  gallery Json[]
+  id               String  @id @default(cuid())
+  gallery          Json[]
+  intro_video_link String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

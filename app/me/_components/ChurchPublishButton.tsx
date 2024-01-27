@@ -23,14 +23,17 @@ import Spinner from '@/components/spinner';
 interface Props {
   churchId: string;
   churchStatus: PublishStatus;
+  isPublishable: boolean;
 }
 
-function ChurchPublishButton({ churchId, churchStatus }: Props) {
+function ChurchPublishButton({ churchId, churchStatus, isPublishable }: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const handleStatusUpdate = async (status: PublishStatus) => {
     try {
+      if (status === churchStatus) return;
+
       setIsLoading(true);
       const response = await churchApi.basicInfo.update(churchId, { status });
 
@@ -50,7 +53,7 @@ function ChurchPublishButton({ churchId, churchStatus }: Props) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button aria-label="menu" disabled={isLoading}>
+        <Button aria-label="menu" disabled={isLoading} variant="secondary">
           {isLoading ? (
             <>
               <Spinner /> <span className="ml-2 text-xs">Updating...</span>
@@ -60,7 +63,7 @@ function ChurchPublishButton({ churchId, churchStatus }: Props) {
               {churchStatus.toLowerCase()}
             </span>
           )}
-          <ChevronDownIcon className="h-4 w-4" />
+          <ChevronDownIcon className="size-4" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end">
@@ -70,7 +73,10 @@ function ChurchPublishButton({ churchId, churchStatus }: Props) {
           <DropdownMenuItem onClick={() => handleStatusUpdate('DRAFT')}>
             Draft
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => handleStatusUpdate('PUBLISHED')}>
+          <DropdownMenuItem
+            disabled={!isPublishable}
+            onClick={() => handleStatusUpdate('PUBLISHED')}
+          >
             Publish
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => handleStatusUpdate('INACTIVE')}>
