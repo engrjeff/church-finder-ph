@@ -1,11 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
 import { Metadata } from 'next';
 import Image from 'next/image';
-import { GlobeIcon, Share1Icon } from '@radix-ui/react-icons';
+import { GlobeIcon } from '@radix-ui/react-icons';
 import { CheckIcon, MailIcon, MapPinIcon, PhoneIcon } from 'lucide-react';
 
 import { formatTime } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
 import {
   Carousel,
   CarouselContent,
@@ -14,6 +13,7 @@ import {
   CarouselPrevious,
 } from '@/components/ui/carousel';
 import BackLink from '@/components/back-link';
+import ShareLinkButton from '@/app/_components/ShareLinkButton';
 import SocialIcon from '@/app/_components/SocialIcon';
 
 import { getChurch } from '../../services/church';
@@ -63,13 +63,7 @@ async function ChurchDetailPage({ params }: { params: { id: string } }) {
                   {church.contact_details?.website}
                 </a>
               ) : null}
-              <Button
-                variant="ghost"
-                className="rounded-full hover:bg-white/10"
-              >
-                <Share1Icon className="mr-3 size-4" />
-                Share
-              </Button>
+              <ShareLinkButton url={`/churches/${church.slug}_${church.id}`} />
             </div>
           </div>
         </div>
