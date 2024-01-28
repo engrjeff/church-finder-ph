@@ -149,6 +149,11 @@ export const churchMediaSchema = z.object({
       })
     )
     .optional(),
+
+  intro_video_link: z
+    .string()
+    .url({ message: 'Enter a valid YouTube URL.' })
+    .optional(),
 });
 
 export const churchMapSchema = z.object({

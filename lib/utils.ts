@@ -49,3 +49,13 @@ export const formatTime = (timeStr: string) => {
   let strTime = hours + ':' + minutesStr + ' ' + ampm;
   return strTime;
 };
+
+export function getYoutubeVideoId(youtubeLinkUrl: string) {
+  try {
+    const url = new URL(youtubeLinkUrl);
+    const videoId = url.searchParams.get('v');
+    return videoId;
+  } catch (error) {
+    return null;
+  }
+}

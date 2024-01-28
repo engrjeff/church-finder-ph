@@ -1,13 +1,13 @@
 'use client';
 
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { SubmitErrorHandler, SubmitHandler } from 'react-hook-form';
 import { useFieldArray, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 
 import { churchApi } from '@/lib/apiClient';
-import { errorHandler } from '@/lib/utils';
+import { errorHandler, getYoutubeVideoId } from '@/lib/utils';
 import {
   churchMediaSchema,
   type ChurchMediaData,
@@ -29,7 +29,10 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Separator } from '@/components/ui/separator';
 import FileDropZone from '@/components/file-drop-zone';
+import YouTube from '@/app/_components/Youtube';
 
 const defaultValues: ChurchMediaData = {
   gallery: [],
@@ -54,6 +57,12 @@ function ChurchMediaForm({
   });
 
   const { id: church_id } = useParams<{ id: string }>();
+  const router = useRouter();
+
+  const introVideoLinkValue = form.watch('intro_video_link');
+  const introVideoId = introVideoLinkValue
+    ? getYoutubeVideoId(introVideoLinkValue)
+    : null;
 
   const onSubmit: SubmitHandler<ChurchMediaData> = async (values) => {
     try {
@@ -73,6 +82,8 @@ function ChurchMediaForm({
       if (result.data.status === 'success') {
         toast.success('Church media saved!');
       }
+
+      router.refresh();
     } catch (error) {
       errorHandler(error);
     }
@@ -92,10 +103,7 @@ function ChurchMediaForm({
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit, onError)}
-            className="space-y-6"
-          >
+          <form onSubmit={(e) => e.preventDefault()} className="space-y-6">
             <FormField
               control={form.control}
               name="gallery"
@@ -121,18 +129,49 @@ function ChurchMediaForm({
                 </FormItem>
               )}
             />
-            <div className="hidden space-x-4 pt-4">
-              <Button
-                type="button"
-                variant="outline"
-                size="lg"
-                className="shadow-none"
-              >
-                Cancel
-              </Button>
-              <Button type="submit" size="lg" className="ml-auto shadow-none">
-                Save
-              </Button>
+            <Separator />
+            <div className="grid grid-cols-2 gap-6">
+              <div className="flex-1 space-y-3">
+                <FormField
+                  control={form.control}
+                  name="intro_video_link"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Intro Video Link</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="url"
+                          inputMode="url"
+                          placeholder="A YouTube URL"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <Button
+                  type="button"
+                  size="lg"
+                  className="ml-auto shadow-none"
+                  onClick={async () => {
+                    await onSubmit({ intro_video_link: introVideoLinkValue });
+                  }}
+                >
+                  Save
+                </Button>
+              </div>
+
+              {introVideoId ? (
+                <YouTube videoId={introVideoId} />
+              ) : (
+                <div className="flex aspect-video items-center justify-center rounded-xl bg-white/5 p-6 shadow">
+                  <p className="text-center text-muted-foreground">
+                    A preview will appear here.
+                  </p>
+                </div>
+              )}
             </div>
           </form>
         </Form>

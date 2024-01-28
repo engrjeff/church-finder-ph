@@ -125,24 +125,27 @@ function FileDropZone({
               />
             </li>
           ))}
-      </ul>
 
-      {currentTotal >= maxItems ? null : (
-        <div
-          {...getRootProps()}
-          className={cn(
-            'py-10 border cursor-pointer  border-dashed text-center rounded transition-colors hover:border-primary hover:bg-primary/20',
-            isDragActive ? 'border-primary bg-primary/20' : '',
-            currentTotal >= maxItems ? 'pointer-events-none opacity-60' : ''
+        <li>
+          {currentTotal >= maxItems ? null : (
+            <div
+              {...getRootProps()}
+              className={cn(
+                'border p-6 flex items-center justify-center flex-col h-full cursor-pointer  border-dashed text-center rounded transition-colors hover:border-primary hover:bg-primary/20',
+                isDragActive ? 'border-primary bg-primary/20' : '',
+                currentTotal >= maxItems ? 'pointer-events-none opacity-60' : ''
+              )}
+            >
+              <input {...getInputProps()} />
+              <p className="text-sm">Click to select files, or</p>
+              <p className="mb-3 text-sm">Drag n drop image files here</p>
+              <em className="text-sm text-muted-foreground">
+                (Maximum of {maxItems} images)
+              </em>
+            </div>
           )}
-        >
-          <input {...getInputProps()} />
-          <p>Drag n drop image files here, or click to select files</p>
-          <em className="text-sm text-muted-foreground">
-            (Maximum of {maxItems} images)
-          </em>
-        </div>
-      )}
+        </li>
+      </ul>
 
       <div className="flex justify-end space-x-4 pt-4">
         <Button
@@ -202,6 +205,7 @@ const ImageListItem = ({ fileItem, url, onRemove }: ImageListItemProps) => {
       </div>
       <div className="absolute right-1 top-1">
         <Button
+          type="button"
           size="icon"
           className="rounded-full bg-black/30 hover:bg-black/40"
           onClick={onRemove}

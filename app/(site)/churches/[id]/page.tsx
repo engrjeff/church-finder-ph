@@ -16,6 +16,7 @@ import BackLink from '@/components/back-link';
 import ShareLinkButton from '@/app/_components/ShareLinkButton';
 import SocialIcon from '@/app/_components/SocialIcon';
 
+import ChurchIntoVideo from '../../_components/ChurchIntoVideo';
 import { getChurch } from '../../services/church';
 
 export const generateMetadata = async ({
@@ -69,6 +70,10 @@ async function ChurchDetailPage({ params }: { params: { id: string } }) {
         </div>
         <div className="flex gap-4">
           <div className="space-y-4">
+            <ChurchIntoVideo
+              introVideoLink={church.church_media?.intro_video_link}
+            />
+
             <div className="rounded-xl bg-white/10 p-6 shadow">
               <p>{church.welcome_message}</p>
               <h3 className="my-2 text-lg font-bold">Mission</h3>
