@@ -104,7 +104,7 @@ model ChurchProfile {
   church_size         Int
   communion_frequency String
 
-  church    Church @relation(fields: [church_id], references: [id])
+  church    Church @relation(fields: [church_id], references: [id], onDelete: Cascade)
   church_id String @unique
 
   services        Json[]
@@ -127,7 +127,7 @@ model ChurchContact {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  church    Church @relation(fields: [church_id], references: [id])
+  church    Church @relation(fields: [church_id], references: [id], onDelete: Cascade)
   church_id String @unique
 }
 
@@ -140,7 +140,7 @@ model Pastor {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  church    Church @relation(fields: [church_id], references: [id])
+  church    Church @relation(fields: [church_id], references: [id], onDelete: Cascade)
   church_id String @unique
 }
 
@@ -151,7 +151,7 @@ model ChurchMap {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  church    Church @relation(fields: [church_id], references: [id])
+  church    Church @relation(fields: [church_id], references: [id], onDelete: Cascade)
   church_id String @unique
 }
 
@@ -163,6 +163,6 @@ model ChurchMedia {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  church    Church @relation(fields: [church_id], references: [id])
+  church    Church @relation(fields: [church_id], references: [id], onDelete: Cascade)
   church_id String @unique
 }
