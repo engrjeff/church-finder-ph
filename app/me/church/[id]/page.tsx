@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import BackLink from '@/components/back-link';
 
 import ChurchContactDetails from '../../_components/ChurchContactDetails';
+import ChurchDeleteButton from '../../_components/ChurchDeleteButton';
 import ChurchProfileDetails from '../../_components/ChurchProfileDetails';
 import ChurchPublishButton from '../../_components/ChurchPublishButton';
 import { getChurchById } from '../../services/church';
@@ -51,12 +52,13 @@ async function ChurchDetailsPage({ params }: Props) {
           <span className="sr-only">edit {church.name}</span>
           <Pencil1Icon className="size-4" />
         </Link>
-        <div className="ml-auto">
+        <div className="ml-auto flex items-center gap-3">
           <ChurchPublishButton
             churchId={church.id}
             churchStatus={church.status}
             isPublishable={church.steps_completed.length > 2}
           />
+          <ChurchDeleteButton name={church.name} id={church.id} />
         </div>
       </div>
       <Tabs defaultValue="church-profile">
