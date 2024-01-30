@@ -53,7 +53,7 @@ function MobileNav() {
               ))}
             </ul>
           </nav>
-          <div className="flex items-center gap-3 px-4">
+          <div className="hidden items-center gap-3 px-4">
             <span>Toggle theme</span>
             <ThemeToggler />
           </div>

@@ -44,7 +44,7 @@ async function ChurchDetailPage({ params }: { params: { id: string } }) {
 
   return (
     <>
-      <section className="container my-20">
+      <section className="container px-4 py-6 lg:my-20">
         <BackLink href="/churches">Back to List</BackLink>
         <div className="my-6 flex items-center space-x-1.5 text-sm">
           <Link href="/" className="hover:underline">
@@ -61,36 +61,31 @@ async function ChurchDetailPage({ params }: { params: { id: string } }) {
           </span>
           <span className="font-semibold">{church.name}</span>
         </div>
-        <div className="my-6 flex items-center gap-6">
+        <div className="my-6 flex flex-col gap-6 lg:flex-row lg:items-center">
           <Image
             src={church.logo}
             alt={church.name}
             width={100}
             height={100}
-            className="rounded-xl object-contain shadow"
+            className="hidden rounded-xl object-contain shadow lg:block"
+          />
+          <Image
+            src={church.logo}
+            alt={church.name}
+            width={64}
+            height={64}
+            className="block rounded-xl object-contain shadow lg:hidden"
           />
           <div className="space-y-1">
             <h1 className="text-2xl font-bold">{church.name}</h1>
-            <p className="flex items-center gap-3 text-muted-foreground">
-              <MapPinIcon className="size-4" /> {church.full_address}
+            <p className="flex items-start gap-3 text-sm text-muted-foreground">
+              <MapPinIcon className="mt-1 size-4 shrink-0" />{' '}
+              {church.full_address}
             </p>
-            <div className="flex items-center gap-2 text-muted-foreground">
-              {church.contact_details?.website ? (
-                <a
-                  href={church.contact_details?.website}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-3 text-sm hover:text-foreground hover:underline"
-                >
-                  <GlobeIcon className="size-4" />{' '}
-                  {church.contact_details?.website}
-                </a>
-              ) : null}
-              <ShareLinkButton url={`/churches/${church.slug}_${church.id}`} />
-            </div>
+            <ShareLinkButton url={`/churches/${church.slug}_${church.id}`} />
           </div>
         </div>
-        <div className="flex gap-4">
+        <div className="flex flex-col gap-4 lg:flex-row">
           <div className="space-y-4">
             <ChurchIntoVideo
               introVideoLink={church.church_media?.intro_video_link}
@@ -102,6 +97,142 @@ async function ChurchDetailPage({ params }: { params: { id: string } }) {
               <p className="mb-3 text-sm italic">{church.profile?.mission}</p>
               <h3 className="my-2 text-lg font-bold">Vision</h3>
               <p className="text-sm italic">{church.profile?.vision}</p>
+            </div>
+
+            <div className="block shrink-0 space-y-4 self-start lg:hidden">
+              <div className="rounded-xl bg-white/10 p-6 shadow">
+                <h2 className="mb-1 text-xl font-bold">Services Schedule</h2>
+                <p className="mb-4 text-sm text-muted-foreground">
+                  We would love you to join us in our services during the
+                  following date and time.
+                </p>
+
+                <ul className="space-y-2">
+                  {church.profile?.services?.map((service, index) => (
+                    <li key={`service-${index + 1}-${service.title}`}>
+                      <p>{service.title}</p>
+                      <span className="text-xs text-muted-foreground">
+                        Every {service.day} at {formatTime(service.time)}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="rounded-xl bg-white/10 p-6 shadow">
+                <h2 className="mb-1 text-xl font-bold">Contact Info</h2>
+                <p className="text-sm text-muted-foreground">
+                  Reach us through the following contact information.
+                </p>
+                {church.contact_details?.website && (
+                  <div className="my-4 flex items-start gap-6">
+                    <GlobeIcon className="size-5" />
+                    <div>
+                      <a
+                        href={church.contact_details?.website}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block text-sm hover:underline"
+                      >
+                        {church.contact_details?.website}
+                      </a>
+                      <span className="text-xs text-muted-foreground">
+                        Website
+                      </span>
+                    </div>
+                  </div>
+                )}
+                <div className="my-4 flex items-start gap-6">
+                  <MailIcon className="size-5" />
+                  <div>
+                    <a
+                      href={`mailto:${church.contact_details?.email}`}
+                      className="block text-sm"
+                    >
+                      {church.contact_details?.email}
+                    </a>
+                    <span className="text-xs text-muted-foreground">Email</span>
+                  </div>
+                </div>
+                <div className="my-4 flex items-start gap-6">
+                  <PhoneIcon className="size-5" />
+                  <ul className="space-y-2">
+                    {church.contact_details?.contact_numbers.map(
+                      (phone, index) => (
+                        <li key={`contact-number-${index + 1}-${phone.value}`}>
+                          <p className="text-sm">{phone.value}</p>
+                          <span className="text-xs text-muted-foreground">
+                            Phone
+                          </span>
+                        </li>
+                      )
+                    )}
+                  </ul>
+                </div>
+                <div className="my-4">
+                  <h2 className="mb-1 text-xl font-bold">Social Links</h2>
+                  <p className="mb-4 text-sm text-muted-foreground">
+                    Follow us online through the following platforms.
+                  </p>
+                  <ul className="space-y-2">
+                    {church.contact_details?.social_links?.map(
+                      (socialLink, index) => (
+                        <li
+                          key={`social-link-${index + 1}-${
+                            socialLink.platform
+                          }`}
+                          className="flex items-start gap-6"
+                        >
+                          <SocialIcon
+                            name={socialLink.platform}
+                            className="size-6 shrink-0"
+                          />
+                          <div>
+                            <a
+                              href={socialLink.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="block text-sm hover:underline"
+                            >
+                              {socialLink.url}
+                            </a>
+                            <span className="text-xs text-muted-foreground">
+                              {socialLink.platform}
+                            </span>
+                          </div>
+                        </li>
+                      )
+                    )}
+                  </ul>
+                </div>
+              </div>
+
+              {church.pastor_details && (
+                <div className="rounded-xl bg-white/10 p-6 shadow">
+                  <div className="mb-4 flex items-center gap-6">
+                    <Image
+                      src={church.pastor_details?.photo}
+                      alt={church.pastor_details?.name}
+                      width={64}
+                      height={64}
+                      className="rounded-full object-contain shadow"
+                    />
+                    <div>
+                      <p className="text-lg font-semibold">
+                        {church.pastor_details.name}
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        Pastor, <span className="italic">{church.name}</span>
+                      </p>
+                    </div>
+                  </div>
+                  <div>
+                    <p className="mb-3 text-sm text-muted-foreground">
+                      Short Bio
+                    </p>
+                    <p>{church.pastor_details.bio}</p>
+                  </div>
+                </div>
+              )}
             </div>
 
             <div className="rounded-xl bg-white/10 p-6 shadow">
@@ -234,14 +365,14 @@ async function ChurchDetailPage({ params }: { params: { id: string } }) {
                       {church.church_media?.gallery?.map((image, index) => (
                         <CarouselItem
                           key={index}
-                          className="md:basis-full lg:basis-1/2"
+                          className="max-h-full md:basis-full lg:basis-1/2"
                         >
                           <div className="relative overflow-hidden rounded-xl bg-white/10">
                             <img
                               src={image.url}
                               alt={church.name}
                               height={320}
-                              className="h-[320px] w-full rounded-xl object-cover"
+                              className="block h-[320px] w-full rounded-xl object-cover"
                             />
                           </div>
                         </CarouselItem>
@@ -256,7 +387,7 @@ async function ChurchDetailPage({ params }: { params: { id: string } }) {
             )}
           </div>
 
-          <div className="w-[400px] shrink-0 space-y-4 self-start">
+          <div className="hidden shrink-0 space-y-4 self-start lg:block lg:w-[400px]">
             <div className="rounded-xl bg-white/10 p-6 shadow">
               <h2 className="mb-1 text-xl font-bold">Services Schedule</h2>
               <p className="mb-4 text-sm text-muted-foreground">

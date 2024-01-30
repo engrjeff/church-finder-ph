@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 
 function ChurchesPage({ searchParams }: ChurchListPageProps) {
   return (
-    <section className="container my-20">
+    <section className="container my-6 px-4 lg:my-20">
       <div className="text-center">
         <h1 className="mb-4 text-2xl font-bold">List of Biblical Churches</h1>
         <p>
@@ -32,7 +32,7 @@ function ChurchesPage({ searchParams }: ChurchListPageProps) {
       </div>
 
       <div className="flex flex-row-reverse gap-4">
-        <div className="w-[280px] shrink-0 space-y-4 border-l pl-4">
+        <div className="hidden w-[280px] shrink-0 space-y-4 border-l pl-4 lg:block">
           <Suspense fallback={<p>Loading...</p>}>
             <ChurchSortSelect />
             <ChurchListingFilters />

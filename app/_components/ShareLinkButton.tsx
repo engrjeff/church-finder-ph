@@ -3,14 +3,6 @@
 import { Share1Icon } from '@radix-ui/react-icons';
 import toast from 'react-hot-toast';
 
-import { Button } from '@/components/ui/button';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
-
 function ShareLinkButton({ url }: { url: string }) {
   const handleClick = () => {
     if (navigator.clipboard) {
@@ -22,23 +14,13 @@ function ShareLinkButton({ url }: { url: string }) {
   };
 
   return (
-    <TooltipProvider>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <Button
-            variant="ghost"
-            className="rounded-full hover:bg-white/10"
-            onClick={handleClick}
-          >
-            <Share1Icon className="mr-3 size-4" />
-            Share
-          </Button>
-        </TooltipTrigger>
-        <TooltipContent>
-          <p>Share link</p>
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
+    <button
+      className="flex items-center rounded-full text-sm lg:hover:bg-white/10"
+      onClick={handleClick}
+    >
+      <Share1Icon className="mr-3 size-4" />
+      Share
+    </button>
   );
 }
 

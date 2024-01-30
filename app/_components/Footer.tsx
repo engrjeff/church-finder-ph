@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 function Footer() {
   return (
-    <footer className="m-4 rounded-lg bg-slate-900 shadow">
+    <footer className="border-t bg-background/80 shadow">
       <div className="mx-auto w-full max-w-screen-xl p-4 md:py-8">
         <div className="sm:flex sm:items-center sm:justify-between">
           <Link
@@ -20,26 +20,38 @@ function Footer() {
               </Link>
             </li>
             <li>
-              <Link href="faq" className="me-4 hover:underline md:me-6">
-                FAQs
+              <Link href="/contact" className="me-4 hover:underline md:me-6">
+                Contact
               </Link>
             </li>
             <li>
-              <a href="/contact" className="hover:underline">
-                Contact
+              <a href="/faq" className="hover:underline">
+                FAQs
               </a>
             </li>
           </ul>
         </div>
-        <hr className="my-6 border-gray-200 dark:border-gray-700 sm:mx-auto lg:my-8" />
-        <span className="block text-sm text-gray-500 dark:text-gray-400 sm:text-center">
+        <span className="block text-sm text-gray-400 sm:text-center">
           © {new Date().getFullYear()}{' '}
-          <a href="https://flowbite.com/" className="hover:underline">
+          <Link href="/" className="hover:underline">
             Church Finder PH
-          </a>
+          </Link>
           . All Rights Reserved.
         </span>
+        <p className="text-center text-sm text-gray-400">
+          Made by{' '}
+          <a
+            href="http://jeffsegovia.dev"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline"
+          >
+            Jeff Segovia
+          </a>
+        </p>
       </div>
+
+      <div className="container max-w-screen-xl text-sm"></div>
     </footer>
   );
 }

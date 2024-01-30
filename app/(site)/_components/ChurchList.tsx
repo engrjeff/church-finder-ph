@@ -14,7 +14,7 @@ async function ChurchList({ searchParams }: ChurchListPageProps) {
 
   return (
     <div>
-      <ul className="grid grid-cols-4 gap-4">
+      <ul className="grid grid-cols-2 gap-4 lg:grid-cols-4">
         {churches.map((church) => (
           <li key={`church::${church.id}`}>
             <ChurchListItem church={church} />

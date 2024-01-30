@@ -11,7 +11,7 @@ export default function Home() {
   return (
     <>
       <Hero />
-      <section className="container max-w-screen-lg px-0 py-20">
+      <section className="container max-w-screen-lg px-4 py-12 lg:py-20">
         <Separator className="mb-20" />
         <h2 className="mb-6 bg-gradient-to-br from-foreground to-muted-foreground bg-clip-text text-center text-4xl font-bold text-transparent md:text-5xl">
           New Believer? <br />
@@ -79,7 +79,7 @@ export default function Home() {
             </span>
             <h3 className="text-lg font-semibold">Manage Church Listing</h3>
             <p className="text-muted-foreground">
-              Know man biblical churches? You may add them to a centralized
+              Know many biblical churches? You may add them to a centralized
               listing. The more church you add, the greater the potential of
               others of finding a new home.
             </p>
@@ -94,7 +94,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="container max-w-screen-lg px-0 py-20">
+      <section className="container max-w-screen-lg px-4 py-12 lg:py-20">
         <h2 className="mb-6 bg-gradient-to-br from-foreground to-muted-foreground bg-clip-text text-center text-4xl font-bold text-transparent md:text-5xl">
           Available Churches
         </h2>

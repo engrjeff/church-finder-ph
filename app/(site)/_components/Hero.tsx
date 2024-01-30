@@ -8,11 +8,11 @@ import SearchChurchField from './SearchChurchField';
 
 function Hero() {
   return (
-    <section className="mx-auto flex h-full max-w-2xl flex-col items-center justify-center space-y-6 py-20 text-center">
+    <section className="container mx-auto flex h-full max-w-2xl flex-col items-center justify-center space-y-6 py-12 text-center lg:py-20">
       <span className="rounded-full rounded-bl-none bg-violet-900 p-3 text-sm font-medium text-white">
         Welcome!
       </span>
-      <h1 className="bg-gradient-to-br from-foreground to-muted-foreground bg-clip-text text-5xl font-bold text-transparent md:text-7xl">
+      <h1 className="bg-gradient-to-br from-foreground to-muted-foreground bg-clip-text text-4xl font-bold text-transparent md:text-7xl lg:text-5xl">
         Church Finder PH
       </h1>
       <p className="text-lg text-muted-foreground md:text-xl">
