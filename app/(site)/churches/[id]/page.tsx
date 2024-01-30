@@ -1,8 +1,15 @@
 /* eslint-disable @next/next/no-img-element */
 import { Metadata } from 'next';
 import Image from 'next/image';
+import Link from 'next/link';
 import { GlobeIcon } from '@radix-ui/react-icons';
-import { CheckIcon, MailIcon, MapPinIcon, PhoneIcon } from 'lucide-react';
+import {
+  CheckIcon,
+  ChevronRight,
+  MailIcon,
+  MapPinIcon,
+  PhoneIcon,
+} from 'lucide-react';
 
 import { formatTime } from '@/lib/utils';
 import {
@@ -39,6 +46,21 @@ async function ChurchDetailPage({ params }: { params: { id: string } }) {
     <>
       <section className="container my-20">
         <BackLink href="/churches">Back to List</BackLink>
+        <div className="my-6 flex items-center space-x-1.5 text-sm">
+          <Link href="/" className="hover:underline">
+            Home
+          </Link>
+          <span>
+            <ChevronRight className="size-3" />
+          </span>
+          <Link href="/churches" className="hover:underline">
+            Churches
+          </Link>
+          <span>
+            <ChevronRight className="size-3" />
+          </span>
+          <span className="font-semibold">{church.name}</span>
+        </div>
         <div className="my-6 flex items-center gap-6">
           <Image
             src={church.logo}
@@ -323,7 +345,7 @@ async function ChurchDetailPage({ params }: { params: { id: string } }) {
 
             {church.pastor_details && (
               <div className="rounded-xl bg-white/10 p-6 shadow">
-                <div className="my-6 flex items-center gap-6">
+                <div className="mb-4 flex items-center gap-6">
                   <Image
                     src={church.pastor_details?.photo}
                     alt={church.pastor_details?.name}

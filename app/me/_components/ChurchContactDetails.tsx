@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { GlobeIcon } from '@radix-ui/react-icons';
+import { GlobeIcon, Pencil1Icon } from '@radix-ui/react-icons';
 import { MailIcon, PhoneIcon } from 'lucide-react';
 
 import { buttonVariants } from '@/components/ui/button';
@@ -34,9 +34,16 @@ async function ChurchContactDetails({ churchId }: { churchId: string }) {
 
   return (
     <div className="space-y-4 py-4">
-      <h2 className="text-lg font-semibold">
-        <a href="#church-contact-info">Church Contact Info</a>
-      </h2>
+      <div className="flex items-center gap-2">
+        <h2 className="text-lg font-semibold">Church Contact Info</h2>
+        <Link
+          href={`/me/church/${churchId}/edit?step=church-contact-info`}
+          className={buttonVariants({ size: 'icon', variant: 'ghost' })}
+        >
+          <span className="sr-only">edit church contact info</span>
+          <Pencil1Icon className="size-4" />
+        </Link>
+      </div>
       <Card>
         <CardHeader>
           <CardTitle>Contact Details</CardTitle>

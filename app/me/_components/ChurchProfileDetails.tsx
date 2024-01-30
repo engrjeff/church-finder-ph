@@ -1,5 +1,10 @@
 import Link from 'next/link';
-import { BookmarkIcon, CalendarIcon, CheckIcon } from '@radix-ui/react-icons';
+import {
+  BookmarkIcon,
+  CalendarIcon,
+  CheckIcon,
+  Pencil1Icon,
+} from '@radix-ui/react-icons';
 
 import { formatTime } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
@@ -26,9 +31,16 @@ async function ChurchProfileDetails({ churchId }: { churchId: string }) {
 
   return (
     <div className="space-y-4 py-4">
-      <h2 className="text-lg font-semibold">
-        <a href="#church-profile">Church Profile</a>
-      </h2>
+      <div className="flex items-center gap-2">
+        <h2 className="text-lg font-semibold">Church Profile</h2>
+        <Link
+          href={`/me/church/${churchId}/edit?step=church-profile`}
+          className={buttonVariants({ size: 'icon', variant: 'ghost' })}
+        >
+          <span className="sr-only">edit church profile</span>
+          <Pencil1Icon className="size-4" />
+        </Link>
+      </div>
       <Card>
         <CardHeader>
           <CardTitle>Mission</CardTitle>

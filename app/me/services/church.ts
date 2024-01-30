@@ -1,6 +1,11 @@
 import prisma from '@/prisma/client';
 
-import { ChurchContactData, ChurchProfileData } from '@/lib/validations/church';
+import {
+  ChurchContactData,
+  ChurchMediaData,
+  ChurchProfileData,
+  PastorProfileData,
+} from '@/lib/validations/church';
 
 export async function getChurchById(churchId: string) {
   const church = await prisma.church.findUnique({
@@ -22,6 +27,21 @@ export async function getChurchContactInfo(churchId: string) {
     where: { church_id: churchId },
   });
   return churchContact as unknown as ChurchContactData | null;
+}
+
+export async function getPastorDetails(churchId: string) {
+  const pastorDetails = await prisma.pastor.findFirst({
+    where: { church_id: churchId },
+  });
+  return pastorDetails as unknown as PastorProfileData | null;
+}
+
+export async function getChurchMedia(churchId: string) {
+  const churchMedia = await prisma.churchMedia.findFirst({
+    where: { church_id: churchId },
+  });
+
+  return churchMedia as unknown as ChurchMediaData | null;
 }
 
 export async function getChurchFormData(churchId: string) {

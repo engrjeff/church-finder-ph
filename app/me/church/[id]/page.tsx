@@ -10,8 +10,10 @@ import BackLink from '@/components/back-link';
 
 import ChurchContactDetails from '../../_components/ChurchContactDetails';
 import ChurchDeleteButton from '../../_components/ChurchDeleteButton';
+import ChurchMediaDetails from '../../_components/ChurchMediaDetails';
 import ChurchProfileDetails from '../../_components/ChurchProfileDetails';
 import ChurchPublishButton from '../../_components/ChurchPublishButton';
+import PastorDetails from '../../_components/PastorDetails';
 import { getChurchById } from '../../services/church';
 
 interface Props {
@@ -75,6 +77,12 @@ async function ChurchDetailsPage({ params }: Props) {
         </TabsContent>
         <TabsContent value="church-contact-info">
           <ChurchContactDetails churchId={church.id} />
+        </TabsContent>
+        <TabsContent value="pastor-profile">
+          <PastorDetails churchId={church.id} />
+        </TabsContent>
+        <TabsContent value="media">
+          <ChurchMediaDetails churchId={church.id} />
         </TabsContent>
       </Tabs>
     </>
