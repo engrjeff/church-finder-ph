@@ -29,7 +29,7 @@ function MobileNav() {
             variant="ghost"
             size="icon"
           >
-            <HamburgerMenuIcon className="h-5 w-5" />
+            <HamburgerMenuIcon className="size-5" />
           </Button>
         </SheetTrigger>
         <SheetContent side="left">

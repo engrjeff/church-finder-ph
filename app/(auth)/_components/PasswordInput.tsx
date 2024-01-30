@@ -27,7 +27,7 @@ const PasswordInput = React.forwardRef<HTMLInputElement, InputProps>(
           onClick={() => setPasswordShown((state) => !state)}
           size="icon"
           variant="ghost"
-          className="absolute right-1 top-2 h-8 w-8"
+          className="absolute right-1 top-2 size-8"
         >
           {passwordShown ? <EyeClosedIcon /> : <EyeOpenIcon />}
         </Button>

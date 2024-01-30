@@ -33,7 +33,7 @@ function UserDropdownMenu() {
           variant="ghost"
           className="w-full justify-start gap-4 px-3 py-8"
         >
-          <Avatar className="h-7 w-7">
+          <Avatar className="size-7">
             <AvatarImage
               src={user.image!}
               alt={`profile picture of ${user?.name}`}

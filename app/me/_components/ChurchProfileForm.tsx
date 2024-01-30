@@ -301,7 +301,7 @@ function ChurchProfileForm({
                         type="button"
                         onClick={() => services.remove(index)}
                       >
-                        <Cross1Icon className="h-5 w-5 text-destructive" />
+                        <Cross1Icon className="size-5 text-destructive" />
                       </Button>
                     )}
                   </div>
@@ -457,7 +457,7 @@ function ChurchProfileForm({
                         type="button"
                         onClick={() => ministries.remove(index)}
                       >
-                        <Cross1Icon className="h-5 w-5 text-destructive" />
+                        <Cross1Icon className="size-5 text-destructive" />
                       </Button>
                     )}
                   </div>
@@ -521,7 +521,7 @@ function ChurchProfileForm({
                         type="button"
                         onClick={() => public_services.remove(index)}
                       >
-                        <Cross1Icon className="h-5 w-5 text-destructive" />
+                        <Cross1Icon className="size-5 text-destructive" />
                       </Button>
                     )}
                   </div>
@@ -574,7 +574,7 @@ function ChurchProfileForm({
                         type="button"
                         onClick={() => confessions.remove(index)}
                       >
-                        <Cross1Icon className="h-5 w-5 text-destructive" />
+                        <Cross1Icon className="size-5 text-destructive" />
                       </Button>
                     )}
                   </div>

@@ -6,12 +6,12 @@ const userNavItems = [
   {
     label: 'Listings',
     href: '/me/church',
-    icon: <GridIcon className="mr-3 h-4 w-4" />,
+    icon: <GridIcon className="mr-3 size-4" />,
   },
   {
     label: 'Reviews',
     href: '/me/reviews',
-    icon: <ReaderIcon className="mr-3 h-4 w-4" />,
+    icon: <ReaderIcon className="mr-3 size-4" />,
   },
 ];
 
