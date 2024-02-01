@@ -2,56 +2,62 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { CalendarIcon, MapPinIcon, UsersIcon } from 'lucide-react';
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 
 import { ChurchItem } from '../services/church';
 
 function ChurchListItem({ church }: { church: ChurchItem }) {
   return (
     <article className="group relative h-full">
-      <Card className="h-full border-none bg-white/5">
-        <div className="p-4">
-          <div className="relative aspect-square">
-            <Image
-              src={church.logo}
-              alt={church.name}
-              fill
-              className="size-auto rounded-lg object-cover"
-            />
-          </div>
+      <Card className="flex h-full flex-row gap-4 border-none bg-white/5 p-3 lg:flex-col lg:p-4">
+        <div className="relative size-16 lg:aspect-square lg:size-auto">
+          <Image
+            src={church.logo}
+            alt={church.name}
+            fill
+            className="size-auto rounded-lg object-cover"
+          />
         </div>
 
-        <CardHeader className="py-0">
-          <CardTitle className="hover:text-primary hover:underline group-hover:text-primary group-hover:underline">
-            {church.name}
-          </CardTitle>
-        </CardHeader>
+        <div>
+          <CardHeader className="p-0">
+            <CardTitle className="text-sm hover:text-primary hover:underline group-hover:text-primary group-hover:underline lg:text-base">
+              {church.name}
+            </CardTitle>
+            <CardDescription className="line-clamp-2 flex items-start gap-2 text-xs">
+              <MapPinIcon className="mt-px size-3 shrink-0" />
+              {church.full_address.split(', ').slice(2, 4).join(', ')}
+            </CardDescription>
+            <CardDescription className="text-xs">
+              {church.full_address.split(', ').slice(4).join(', ')}
+            </CardDescription>
+          </CardHeader>
 
-        <CardContent className="relative space-y-2 p-4">
-          <div className="flex items-start gap-2">
-            <MapPinIcon className="mt-0.5 size-4 shrink-0" />
-            <p className="line-clamp-2 text-sm text-muted-foreground">
-              {church.full_address}
-            </p>
-          </div>
-
-          <div className="flex items-start gap-2">
-            <UsersIcon className="mt-0.5 size-4 shrink-0" />
-            <p className="text-sm text-muted-foreground">
-              About {church.profile?.church_size} people
-            </p>
-          </div>
-
-          {church.profile?.services[0] ? (
+          <CardContent className="relative hidden space-y-2 p-0">
             <div className="flex items-start gap-2">
-              <CalendarIcon className="size-4 shrink-0" />
+              <UsersIcon className="mt-0.5 size-4 shrink-0" />
               <p className="text-sm text-muted-foreground">
-                {church.profile?.services[0]?.title} at{' '}
-                {church.profile?.services[0]?.time}
+                About {church.profile?.church_size} people
               </p>
             </div>
-          ) : null}
-        </CardContent>
+
+            {church.profile?.services[0] ? (
+              <div className="flex items-start gap-2">
+                <CalendarIcon className="size-4 shrink-0" />
+                <p className="text-sm text-muted-foreground">
+                  {church.profile?.services[0]?.title} at{' '}
+                  {church.profile?.services[0]?.time}
+                </p>
+              </div>
+            ) : null}
+          </CardContent>
+        </div>
       </Card>
 
       <Link

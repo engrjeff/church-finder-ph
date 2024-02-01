@@ -44,9 +44,9 @@ async function ChurchDetailPage({ params }: { params: { id: string } }) {
 
   return (
     <>
-      <section className="container px-4 py-6 lg:my-20">
+      <section className="container space-y-4 px-4 py-6 lg:my-20">
         <BackLink href="/churches">Back to List</BackLink>
-        <div className="my-6 flex items-center space-x-1.5 text-sm">
+        <div className="hidden items-center space-x-1.5 text-sm lg:flex">
           <Link href="/" className="hover:underline">
             Home
           </Link>
@@ -61,7 +61,7 @@ async function ChurchDetailPage({ params }: { params: { id: string } }) {
           </span>
           <span className="font-semibold">{church.name}</span>
         </div>
-        <div className="my-6 flex flex-col gap-6 lg:flex-row lg:items-center">
+        <div className="flex flex-col gap-6 lg:flex-row lg:items-center">
           <Image
             src={church.logo}
             alt={church.name}
@@ -191,7 +191,7 @@ async function ChurchDetailPage({ params }: { params: { id: string } }) {
                               href={socialLink.url}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="block text-sm hover:underline"
+                              className="block break-words text-sm hover:underline"
                             >
                               {socialLink.url}
                             </a>

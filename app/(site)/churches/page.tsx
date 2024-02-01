@@ -31,7 +31,7 @@ function ChurchesPage({ searchParams }: ChurchListPageProps) {
         <span className="font-semibold">Church List</span>
       </div>
 
-      <div className="flex flex-row-reverse gap-4">
+      <div className="lg:flex lg:flex-row-reverse lg:gap-4">
         <div className="hidden w-[280px] shrink-0 space-y-4 border-l pl-4 lg:block">
           <Suspense fallback={<p>Loading...</p>}>
             <ChurchSortSelect />
