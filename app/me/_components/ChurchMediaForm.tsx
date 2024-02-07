@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { SubmitErrorHandler, SubmitHandler } from 'react-hook-form';
@@ -45,6 +46,8 @@ function ChurchMediaForm({
   churchMediaData?: ChurchMediaData;
   churchMediaId?: string;
 }) {
+  const [loading, setLoading] = useState(false);
+
   const form = useForm<ChurchMediaData>({
     resolver: zodResolver(churchMediaSchema),
     defaultValues: churchMediaData ? churchMediaData : defaultValues,
@@ -66,6 +69,8 @@ function ChurchMediaForm({
 
   const onSubmit: SubmitHandler<ChurchMediaData> = async (values) => {
     try {
+      setLoading(true);
+
       let result;
       if (churchMediaId) {
         result = await churchApi.churchMedia.update(church_id, {
@@ -86,6 +91,8 @@ function ChurchMediaForm({
       router.refresh();
     } catch (error) {
       errorHandler(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -155,6 +162,8 @@ function ChurchMediaForm({
                   type="button"
                   size="lg"
                   className="ml-auto shadow-none"
+                  disabled={loading}
+                  loading={loading}
                   onClick={async () => {
                     await onSubmit({ intro_video_link: introVideoLinkValue });
                   }}

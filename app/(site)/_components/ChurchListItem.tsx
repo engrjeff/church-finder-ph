@@ -15,8 +15,8 @@ import { ChurchItem } from '../services/church';
 function ChurchListItem({ church }: { church: ChurchItem }) {
   return (
     <article className="group relative h-full">
-      <Card className="flex h-full flex-row gap-4 border-none bg-white/5 p-3 lg:flex-col lg:p-4">
-        <div className="relative size-16 lg:aspect-square lg:size-auto">
+      <Card className="flex h-full flex-row gap-4 border-none bg-white/5 p-3 transition-colors duration-300 group-hover:bg-white/10 lg:flex-col lg:p-4">
+        <div className="relative size-16 group-hover:shadow lg:aspect-square lg:size-auto">
           <Image
             src={church.logo}
             alt={church.name}
@@ -27,7 +27,7 @@ function ChurchListItem({ church }: { church: ChurchItem }) {
 
         <div>
           <CardHeader className="p-0">
-            <CardTitle className="text-sm hover:text-primary hover:underline group-hover:text-primary group-hover:underline lg:text-base">
+            <CardTitle className="text-sm lg:text-base">
               {church.name}
             </CardTitle>
             <CardDescription className="line-clamp-2 flex items-start gap-2 text-xs">

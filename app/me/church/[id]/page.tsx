@@ -5,11 +5,12 @@ import { notFound } from 'next/navigation';
 import { Pencil1Icon } from '@radix-ui/react-icons';
 
 import { buttonVariants } from '@/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import BackLink from '@/components/back-link';
 
 import ChurchContactDetails from '../../_components/ChurchContactDetails';
 import ChurchDeleteButton from '../../_components/ChurchDeleteButton';
+import ChurchInfoTabs from '../../_components/ChurchInfoTabs';
 import ChurchMediaDetails from '../../_components/ChurchMediaDetails';
 import ChurchProfileDetails from '../../_components/ChurchProfileDetails';
 import ChurchPublishButton from '../../_components/ChurchPublishButton';
@@ -63,7 +64,7 @@ async function ChurchDetailsPage({ params }: Props) {
           <ChurchDeleteButton name={church.name} id={church.id} />
         </div>
       </div>
-      <Tabs defaultValue="church-profile">
+      <ChurchInfoTabs>
         <TabsList>
           <TabsTrigger value="church-profile">Church Profile</TabsTrigger>
           <TabsTrigger value="church-contact-info">Contact Info</TabsTrigger>
@@ -84,7 +85,7 @@ async function ChurchDetailsPage({ params }: Props) {
         <TabsContent value="media">
           <ChurchMediaDetails churchId={church.id} />
         </TabsContent>
-      </Tabs>
+      </ChurchInfoTabs>
     </>
   );
 }

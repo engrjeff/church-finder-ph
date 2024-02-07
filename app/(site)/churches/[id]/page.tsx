@@ -355,24 +355,20 @@ async function ChurchDetailPage({ params }: { params: { id: string } }) {
                   {church.name}
                 </p>
 
-                <div className="h-[300px]">
+                <div className="aspect-video w-full overflow-hidden rounded-xl">
                   <Carousel
                     opts={{
                       align: 'start',
                     }}
                   >
-                    <CarouselContent>
+                    <CarouselContent className="m-0 aspect-video w-full">
                       {church.church_media?.gallery?.map((image, index) => (
-                        <CarouselItem
-                          key={index}
-                          className="max-h-full md:basis-full lg:basis-1/2"
-                        >
+                        <CarouselItem key={index} className="p-0">
                           <div className="relative overflow-hidden rounded-xl bg-white/10">
                             <img
                               src={image.url}
                               alt={church.name}
-                              height={320}
-                              className="block h-[320px] w-full rounded-xl object-cover"
+                              className="block size-full rounded-xl object-cover"
                             />
                           </div>
                         </CarouselItem>

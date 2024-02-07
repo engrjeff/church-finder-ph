@@ -23,9 +23,9 @@ function ChurchCard({ church }: { church: Church }) {
         <Pencil1Icon className="size-4" />
       </Link>
 
-      <Card className="group relative h-full bg-white/5">
+      <Card className="group relative h-full border-none bg-white/5 transition-colors hover:bg-white/10">
         <div className="p-4">
-          <div className="relative aspect-square">
+          <div className="relative aspect-square group-hover:shadow-md">
             <Image
               src={church.logo}
               alt={church.name}
@@ -36,9 +36,7 @@ function ChurchCard({ church }: { church: Church }) {
         </div>
 
         <CardHeader className="items-start py-0">
-          <CardTitle className="hover:text-primary hover:underline group-hover:text-primary group-hover:underline">
-            {church.name}
-          </CardTitle>
+          <CardTitle>{church.name}</CardTitle>
 
           <Badge
             className="w-auto capitalize"
