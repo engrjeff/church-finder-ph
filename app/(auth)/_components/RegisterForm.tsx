@@ -53,15 +53,15 @@ function RegisterForm() {
                 password,
               });
 
-              toast.success('You are now registered! Now log in your account.');
+              if (response.data.status === 'success') {
+                toast.success(response.data.message);
 
-              router.replace('/signin');
-
-              router.refresh();
+                form.reset();
+              }
             } catch (error) {
               if (axios.isAxiosError(error)) {
-                if (error.response?.data?.error) {
-                  toast.error(error.response?.data?.error);
+                if (error.response?.data?.message) {
+                  toast.error(error.response?.data?.message);
                 }
               } else {
                 toast.error('Server Error: Something went wrong');

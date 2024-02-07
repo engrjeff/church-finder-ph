@@ -54,7 +54,10 @@ function SignInForm() {
             });
 
             if (!response?.ok) {
-              toast.error('No account found');
+              if (response?.error) {
+                toast.error(response.error);
+              }
+
               setLoading(false);
               return;
             }

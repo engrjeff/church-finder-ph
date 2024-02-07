@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
-    "package:update": "npx npm-check-updates -u && npm install"
+    "package:update": "npx npm-check-updates -u && npm install",
+    "email": "email dev"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
@@ -42,6 +43,9 @@
     "@radix-ui/react-toast": "^1.1.5",
     "@radix-ui/react-toggle": "^1.0.3",
     "@radix-ui/react-tooltip": "^1.0.7",
+    "@react-email/button": "0.0.13",
+    "@react-email/components": "0.0.14",
+    "@react-email/html": "0.0.7",
     "@tanstack/react-query": "^5.17.19",
     "@uidotdev/usehooks": "^2.4.1",
     "@vis.gl/react-google-maps": "^0.5.0",
@@ -61,12 +65,15 @@
     "react-day-picker": "^8.10.0",
     "react-dom": "^18",
     "react-dropzone": "^14.2.3",
+    "react-email": "2.0.0",
     "react-hook-form": "^7.49.3",
     "react-hot-toast": "^2.4.1",
+    "resend": "^3.1.0",
     "select-philippines-address": "^1.0.6",
     "slugify": "^1.6.6",
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",
+    "uuid": "^9.0.1",
     "zod": "^3.22.4"
   },
   "devDependencies": {
@@ -76,6 +83,7 @@
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/uuid": "^9.0.8",
     "@typescript-eslint/parser": "^6.19.1",
     "autoprefixer": "^10",
     "eslint": "^8",
